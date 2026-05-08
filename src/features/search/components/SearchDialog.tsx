@@ -16,11 +16,23 @@ import { useQuranStore } from "@/store/useQuranStore";
 
 export function SearchDialog() {
   const [open, setOpen] = useState(false);
-  const { setSelectedSurah } = useQuranStore();
+  const [query, setQuery] = useState("");
+  const { setSelectedSurah, setCurrentAyah } = useQuranStore();
 
   const { data: surahs } = useQuery({
     queryKey: ["surahs"],
     queryFn: fetchSurahs,
+  });
+
+  const { data: searchResults, isLoading: isSearching } = useQuery({
+    queryKey: ["search", query],
+    queryFn: async () => {
+      if (query.length < 3) return null;
+      const res = await fetch(`https://api.quran.com/api/v4/search?q=${query}&language=en&size=10`);
+      const data = await res.json();
+      return data.search.results;
+    },
+    enabled: query.length >= 3,
   });
 
   useEffect(() => {
@@ -48,34 +60,53 @@ export function SearchDialog() {
       </button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput 
+          placeholder="Search Surahs or Ayahs..." 
+          value={query}
+          onValueChange={setQuery}
+        />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Surahs">
-            {surahs?.map((surah) => (
-              <CommandItem 
-                key={surah.id}
-                onSelect={() => {
-                  setSelectedSurah(surah.id);
-                  setOpen(false);
-                }}
-              >
-                <BookOpen className="mr-2 h-4 w-4" />
-                <span>{surah.name_complex}</span>
-                <span className="ml-auto text-xs text-muted-foreground">{surah.translated_name.name}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-          <CommandGroup heading="Quick Links">
-            <CommandItem>
-              <Book className="mr-2 h-4 w-4" />
-              <span>Ayatul Kursi</span>
-            </CommandItem>
-            <CommandItem>
-              <Book className="mr-2 h-4 w-4" />
-              <span>Surah Yaseen</span>
-            </CommandItem>
-          </CommandGroup>
+          {query.length < 3 ? (
+            <CommandGroup heading="Surahs">
+              {surahs?.map((surah) => (
+                <CommandItem 
+                  key={surah.id}
+                  onSelect={() => {
+                    setSelectedSurah(surah.id);
+                    setOpen(false);
+                  }}
+                >
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  <span>{surah.name_complex}</span>
+                  <span className="ml-auto text-xs text-muted-foreground">{surah.translated_name.name}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ) : (
+            <CommandGroup heading="Search Results">
+              {isSearching && <div className="p-4 text-center text-sm text-muted-foreground">Searching...</div>}
+              {searchResults?.map((result: any) => (
+                <CommandItem 
+                  key={result.verse_id}
+                  onSelect={() => {
+                    const [sId] = result.verse_key.split(":");
+                    setSelectedSurah(parseInt(sId));
+                    setCurrentAyah(result.verse_key);
+                    setOpen(false);
+                  }}
+                >
+                  <Search className="mr-2 h-4 w-4" />
+                  <div className="flex flex-col">
+                    <span className="text-sm line-clamp-1" dangerouslySetInnerHTML={{ __html: result.text }} />
+                    <span className="text-[10px] text-muted-foreground">Surah {result.verse_key}</span>
+                  </div>
+                </CommandItem>
+              ))}
+              {!isSearching && searchResults?.length === 0 && (
+                <div className="p-4 text-center text-sm text-muted-foreground">No results found.</div>
+              )}
+            </CommandGroup>
+          )}
         </CommandList>
       </CommandDialog>
     </>

@@ -24,9 +24,7 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
         disableTransitionOnChange
         {...props}
       >
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        {children}
       </NextThemesProvider>
     </QueryClientProvider>
   );

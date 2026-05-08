@@ -12,7 +12,13 @@ import { useEffect, useRef } from "react";
 import { staggerReveal } from "@/animations/gsap-setup";
 
 export function AyahReader() {
-  const { selectedSurah, fontSizeArabic, fontSizeTranslation } = useQuranStore();
+  const { 
+    selectedSurah, 
+    fontSizeArabic, 
+    fontSizeTranslation,
+    currentAyah,
+    setCurrentAyah 
+  } = useQuranStore();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { data: surahs } = useQuery({
@@ -35,7 +41,7 @@ export function AyahReader() {
 
   if (isLoading) {
     return (
-      <div className="flex-1 min-h-screen p-12 max-w-4xl mx-auto space-y-12">
+      <div className="flex-1 p-12 max-w-4xl mx-auto space-y-12">
         <div className="h-40 bg-secondary/20 rounded-3xl animate-pulse" />
         <div className="space-y-8">
           {[...Array(5)].map((_, i) => (
@@ -47,80 +53,83 @@ export function AyahReader() {
   }
 
   return (
-    <div className="flex-1 min-h-screen p-6 md:p-12 max-w-4xl mx-auto space-y-12">
+    <div className="flex-1 p-6 md:p-8 max-w-5xl mx-auto space-y-10">
       {/* Surah Header */}
       <motion.div 
         key={selectedSurah}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center space-y-4 pb-12 border-b border-border/50"
+        className="text-center space-y-2 py-8 bg-card rounded-3xl border border-border shadow-sm"
       >
-        <div className="flex items-center justify-center gap-4">
-          <div className="h-px w-12 bg-accent/30" />
-          <h2 className="text-3xl md:text-5xl font-bold font-scheherazade text-foreground">
-            {currentSurah?.name_arabic}
-          </h2>
-          <div className="h-px w-12 bg-accent/30" />
+        <h2 className="text-3xl md:text-4xl font-bold font-scheherazade text-foreground">
+          {currentSurah?.name_arabic}
+        </h2>
+        <div className="flex items-center justify-center gap-3 text-sm text-primary font-bold uppercase tracking-widest">
+          <span>{currentSurah?.name_complex}</span>
+          <span className="w-1 h-1 rounded-full bg-primary/30" />
+          <span>{currentSurah?.verses_count} Ayahs</span>
+          <span className="w-1 h-1 rounded-full bg-primary/30" />
+          <span>{currentSurah?.revelation_place}</span>
         </div>
-        <p className="text-lg text-muted-foreground uppercase tracking-widest font-medium">
-          {currentSurah?.name_complex}
-        </p>
-        <p className="text-sm text-accent italic">
-          {currentSurah?.verses_count} Ayahs • {currentSurah?.revelation_place}
-        </p>
       </motion.div>
 
-      <div className="space-y-8" ref={containerRef}>
+      <div className="space-y-6" ref={containerRef}>
         {ayahs?.map((ayah, index) => (
           <motion.article
             key={ayah.id}
-            className="ayah-card group bg-white/40 backdrop-blur-sm border border-white/60 p-8 rounded-3xl space-y-8 relative hover:bg-white/60 hover:shadow-xl hover:shadow-[#8B6E4E]/5 transition-all duration-500"
+            className={cn(
+              "ayah-card group bg-card border border-border p-6 md:p-10 rounded-[2.5rem] space-y-8 transition-all duration-500",
+              currentAyah === ayah.verse_key && "ring-2 ring-primary ring-offset-4 ring-offset-background"
+            )}
           >
             {/* Ayah Meta & Actions */}
-            <div className="flex items-center justify-between pb-6 border-b border-[#8B6E4E]/10">
-              <div className="flex items-center gap-6">
-                <div className="flex flex-col items-center">
-                  <span className="text-[10px] font-bold text-[#8B6E4E] uppercase tracking-tighter">Ayah</span>
-                  <span className="text-sm font-black text-[#3E2F28]">{ayah.verse_key}</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="px-4 py-2 bg-secondary rounded-xl text-xs font-bold text-primary">
+                  {ayah.verse_key}
                 </div>
-                <div className="h-8 w-px bg-[#8B6E4E]/20" />
-                <div className="flex items-center gap-2">
-                  {[Play, Bookmark, Copy, Share2].map((Icon, i) => (
-                    <button key={i} className="p-2.5 text-[#3E2F28]/40 hover:text-[#8B6E4E] hover:bg-[#8B6E4E]/5 rounded-xl transition-all">
+                <div className="flex items-center gap-1">
+                  <button 
+                    onClick={() => setCurrentAyah(ayah.verse_key)}
+                    className={cn(
+                      "p-2.5 rounded-xl transition-all",
+                      currentAyah === ayah.verse_key 
+                        ? "bg-primary text-primary-foreground shadow-lg scale-110" 
+                        : "text-foreground/40 hover:text-primary hover:bg-primary/5"
+                    )}
+                  >
+                    <Play size={20} fill={currentAyah === ayah.verse_key ? "currentColor" : "none"} />
+                  </button>
+                  {[Bookmark, Copy, Share2].map((Icon, i) => (
+                    <button key={i} className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
                       <Icon size={20} />
                     </button>
                   ))}
                 </div>
               </div>
-              <button className="p-2 text-[#3E2F28]/30 hover:text-[#3E2F28]">
-                <MoreHorizontal size={24} />
-              </button>
             </div>
 
             {/* Arabic Text */}
-            <div className="text-right py-4">
+            <div className="text-right">
               <p 
                 style={{ fontSize: `${fontSizeArabic}px` }}
-                className="leading-[2.5] font-scheherazade text-[#3E2F28] group-hover:text-[#8B6E4E] transition-colors duration-500"
+                className="leading-[2.5] font-scheherazade text-foreground transition-colors duration-500"
               >
                 {ayah.text_uthmani}
-                <span className="inline-flex items-center justify-center w-12 h-12 ml-6 rounded-full border-2 border-[#8B6E4E]/20 text-sm font-bold text-[#8B6E4E] font-sans bg-white/50">
+                <span className="inline-flex items-center justify-center w-10 h-10 ml-6 rounded-full border border-primary/20 text-xs font-bold text-primary font-sans bg-secondary/50">
                   {index + 1}
                 </span>
               </p>
             </div>
 
             {/* Translation */}
-            <div className="space-y-4 pt-4 border-t border-[#8B6E4E]/5">
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#8B6E4E]" />
-                <p className="text-[10px] font-black text-[#8B6E4E] tracking-widest uppercase">
-                  {ayah.translations?.[0]?.resource_name || "Saheeh International"}
-                </p>
-              </div>
+            <div className="space-y-3">
+              <p className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase opacity-60">
+                {ayah.translations?.[0]?.resource_name || "Saheeh International"}
+              </p>
               <p 
                 style={{ fontSize: `${fontSizeTranslation}px` }}
-                className="text-[#3E2F28]/80 leading-relaxed font-inter font-medium"
+                className="text-foreground/80 leading-relaxed font-inter font-medium"
                 dangerouslySetInnerHTML={{ __html: ayah.translations?.[0]?.text || "Translation not available" }}
               />
             </div>

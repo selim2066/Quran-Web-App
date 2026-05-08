@@ -13,6 +13,9 @@ interface QuranState {
   
   translationLanguage: string;
   setTranslationLanguage: (lang: string) => void;
+  
+  currentAyah: string | null;
+  setCurrentAyah: (ayahKey: string | null) => void;
 }
 
 export const useQuranStore = create<QuranState>()(
@@ -29,6 +32,9 @@ export const useQuranStore = create<QuranState>()(
       
       translationLanguage: "en",
       setTranslationLanguage: (lang) => set({ translationLanguage: lang }),
+
+      currentAyah: null,
+      setCurrentAyah: (ayahKey) => set({ currentAyah: ayahKey }),
     }),
     {
       name: "quran-storage",
