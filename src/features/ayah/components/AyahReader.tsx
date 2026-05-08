@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchAyahs, fetchSurahs } from "../services/quranApi";
+import { fetchAyahs, fetchSurahs } from "../../surah/services/quranApi";
 import { useQuranStore } from "@/store/useQuranStore";
 import { useEffect, useRef } from "react";
 import { staggerReveal } from "@/animations/gsap-setup";
@@ -70,53 +70,58 @@ export function AyahReader() {
         </p>
       </motion.div>
 
-      <div className="space-y-16" ref={containerRef}>
+      <div className="space-y-8" ref={containerRef}>
         {ayahs?.map((ayah, index) => (
           <motion.article
             key={ayah.id}
-            className="ayah-card group space-y-8 relative"
+            className="ayah-card group bg-white/40 backdrop-blur-sm border border-white/60 p-8 rounded-3xl space-y-8 relative hover:bg-white/60 hover:shadow-xl hover:shadow-[#8B6E4E]/5 transition-all duration-500"
           >
             {/* Ayah Meta & Actions */}
-            <div className="flex items-center justify-between pb-4 border-b border-border/30">
-              <div className="flex items-center gap-4">
-                <span className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-xs font-bold text-muted-foreground">
-                  {ayah.verse_key}
-                </span>
-                <div className="flex items-center gap-1">
+            <div className="flex items-center justify-between pb-6 border-b border-[#8B6E4E]/10">
+              <div className="flex items-center gap-6">
+                <div className="flex flex-col items-center">
+                  <span className="text-[10px] font-bold text-[#8B6E4E] uppercase tracking-tighter">Ayah</span>
+                  <span className="text-sm font-black text-[#3E2F28]">{ayah.verse_key}</span>
+                </div>
+                <div className="h-8 w-px bg-[#8B6E4E]/20" />
+                <div className="flex items-center gap-2">
                   {[Play, Bookmark, Copy, Share2].map((Icon, i) => (
-                    <button key={i} className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/5 rounded-lg transition-all">
-                      <Icon size={18} />
+                    <button key={i} className="p-2.5 text-[#3E2F28]/40 hover:text-[#8B6E4E] hover:bg-[#8B6E4E]/5 rounded-xl transition-all">
+                      <Icon size={20} />
                     </button>
                   ))}
                 </div>
               </div>
-              <button className="p-2 text-muted-foreground hover:text-foreground">
-                <MoreHorizontal size={20} />
+              <button className="p-2 text-[#3E2F28]/30 hover:text-[#3E2F28]">
+                <MoreHorizontal size={24} />
               </button>
             </div>
 
             {/* Arabic Text */}
-            <div className="text-right">
+            <div className="text-right py-4">
               <p 
                 style={{ fontSize: `${fontSizeArabic}px` }}
-                className="leading-[2] font-scheherazade text-foreground group-hover:text-accent transition-colors duration-500"
+                className="leading-[2.5] font-scheherazade text-[#3E2F28] group-hover:text-[#8B6E4E] transition-colors duration-500"
               >
                 {ayah.text_uthmani}
-                <span className="inline-flex items-center justify-center w-10 h-10 ml-4 rounded-full border border-accent/30 text-xs font-bold text-accent font-sans">
+                <span className="inline-flex items-center justify-center w-12 h-12 ml-6 rounded-full border-2 border-[#8B6E4E]/20 text-sm font-bold text-[#8B6E4E] font-sans bg-white/50">
                   {index + 1}
                 </span>
               </p>
             </div>
 
             {/* Translation */}
-            <div className="space-y-2">
-              <p className="text-xs font-bold text-accent tracking-widest uppercase">
-                {ayah.translations[0]?.resource_name}
-              </p>
+            <div className="space-y-4 pt-4 border-t border-[#8B6E4E]/5">
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#8B6E4E]" />
+                <p className="text-[10px] font-black text-[#8B6E4E] tracking-widest uppercase">
+                  {ayah.translations?.[0]?.resource_name || "Saheeh International"}
+                </p>
+              </div>
               <p 
                 style={{ fontSize: `${fontSizeTranslation}px` }}
-                className="text-foreground/80 leading-relaxed font-inter"
-                dangerouslySetInnerHTML={{ __html: ayah.translations[0]?.text }}
+                className="text-[#3E2F28]/80 leading-relaxed font-inter font-medium"
+                dangerouslySetInnerHTML={{ __html: ayah.translations?.[0]?.text || "Translation not available" }}
               />
             </div>
           </motion.article>
