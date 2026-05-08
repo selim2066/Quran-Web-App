@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes";
 import { useState } from "react";
+import { SmoothScroll } from "@/components/shared/SmoothScroll";
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   const [queryClient] = useState(() => new QueryClient({
@@ -23,7 +24,9 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
         disableTransitionOnChange
         {...props}
       >
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </NextThemesProvider>
     </QueryClientProvider>
   );
