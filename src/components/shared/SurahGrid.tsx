@@ -5,17 +5,59 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Surah } from "@/features/surah/services/quranApi";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { ChevronDown } from "lucide-react";
 
 interface SurahGridProps {
   surahs: Surah[];
 }
 
 export function SurahGrid({ surahs }: SurahGridProps) {
+  const [displayCount, setDisplayCount] = React.useState(20);
+  const [activeTab, setActiveTab] = React.useState("Surah");
+  const visibleSurahs = surahs.slice(0, displayCount);
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {surahs.map((surah, index) => (
-        <SurahCard key={surah.id} surah={surah} index={index} />
-      ))}
+    <div className="space-y-8">
+      <div className="flex justify-end mb-6">
+        <div className="bg-secondary/50 p-1 rounded-2xl flex items-center gap-1 border border-border/40">
+          {["Surah", "Juz", "Page"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => {
+                if (tab === "Surah") setActiveTab(tab);
+                else toast(`${tab} view is coming soon`);
+              }}
+              className={cn(
+                "px-6 py-1.5 rounded-xl text-xs font-bold transition-all",
+                activeTab === tab 
+                  ? "bg-card text-primary shadow-sm border border-border/50" 
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {visibleSurahs.map((surah, index) => (
+          <SurahCard key={surah.id} surah={surah} index={index} />
+        ))}
+      </div>
+
+      {displayCount < surahs.length && (
+        <div className="flex justify-center pt-8">
+          <button 
+            onClick={() => setDisplayCount(prev => prev + 20)}
+            className="flex items-center gap-2 px-8 py-3 bg-secondary hover:bg-secondary/80 text-foreground font-bold rounded-2xl transition-all border border-border/50 group"
+          >
+            <span>Show More</span>
+            <ChevronDown size={20} className="group-hover:translate-y-1 transition-transform" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -23,50 +65,39 @@ export function SurahGrid({ surahs }: SurahGridProps) {
 function SurahCard({ surah, index }: { surah: Surah; index: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.02 }}
+      transition={{ delay: (index % 20) * 0.02 }}
     >
       <Link href={`/surah/${surah.id}`}>
-        <div className="group relative bg-card border border-border/50 hover:border-primary/50 rounded-3xl p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 active:scale-[0.98]">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary font-bold shadow-inner relative overflow-hidden group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-              <span className="relative z-10">{surah.id}</span>
-              <div className="absolute inset-0 opacity-10 font-serif text-3xl flex items-center justify-center translate-y-1">۞</div>
-            </div>
-            
-            <div className={cn(
-              "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
-              surah.revelation_place === "makkah" ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-            )}>
-              {surah.revelation_place}
-            </div>
+        <div className={cn(
+          "group flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 border border-border/40",
+          "bg-[#151915]/50 backdrop-blur-sm hover:bg-primary/5 hover:border-primary/40",
+          "dark:bg-[#111] dark:hover:bg-primary/10"
+        )}>
+          {/* Number Diamond */}
+          <div className="relative shrink-0 w-10 h-10 flex items-center justify-center">
+            <div className="absolute inset-0 bg-secondary group-hover:bg-primary/20 rotate-45 rounded-lg transition-colors duration-300" />
+            <span className="relative z-10 text-xs font-bold text-foreground/60 group-hover:text-primary transition-colors">
+              {surah.id}
+            </span>
           </div>
 
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex-1 flex items-center justify-between min-w-0">
             <div className="min-w-0">
-              <h3 className="text-xl font-bold text-foreground truncate group-hover:text-primary transition-colors">
+              <h3 className="font-bold text-foreground truncate group-hover:text-primary transition-colors">
                 {surah.name_complex}
               </h3>
-              <p className="text-xs text-muted-foreground font-medium truncate uppercase tracking-widest opacity-60">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest truncate opacity-60">
                 {surah.translated_name.name}
               </p>
             </div>
-            <div className="text-right shrink-0">
-              <p className="text-2xl font-scheherazade text-foreground leading-none mb-1">
+            
+            <div className="text-right">
+              <p className="text-xl font-scheherazade text-foreground leading-none">
                 {surah.name_arabic}
               </p>
-              <p className="text-[10px] font-bold text-primary/60 uppercase">
-                {surah.verses_count} Ayahs
-              </p>
             </div>
-          </div>
-
-          {/* Decorative Corner */}
-          <div className="absolute bottom-0 right-0 w-12 h-12 opacity-0 group-hover:opacity-10 transition-opacity">
-            <svg viewBox="0 0 100 100" className="w-full h-full text-primary">
-              <path d="M100,0 L100,100 L0,100 Z" fill="currentColor" />
-            </svg>
           </div>
         </div>
       </Link>

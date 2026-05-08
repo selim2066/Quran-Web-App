@@ -23,14 +23,8 @@ export default async function HomePage() {
           <HeroSection />
           
           <div className="container mx-auto px-6 py-16">
-            <div className="flex items-center justify-between mb-12">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold text-foreground">Explore Surahs</h2>
-                <p className="text-muted-foreground font-medium">Read and study the 114 chapters of the Holy Quran</p>
-              </div>
-              <div className="hidden md:flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-primary/60">
-                <span>Total 114 Chapters</span>
-              </div>
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-4xl font-bold text-foreground">Quran Mazid</h2>
             </div>
             
             <SurahGrid surahs={surahs} />
