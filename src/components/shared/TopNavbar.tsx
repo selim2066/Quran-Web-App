@@ -1,31 +1,8 @@
-import React, { useEffect, useRef } from "react";
-import { Search, Bell, User, Heart } from "lucide-react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { gsap } from "@/animations/gsap-setup";
+import { SearchDialog } from "@/features/search/components/SearchDialog";
 
 export function TopNavbar() {
-  const progressRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    gsap.to(progressRef.current, {
-      scaleX: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.3,
-      },
-    });
-  }, []);
-
   return (
     <header className="sticky top-0 z-40 w-full bg-background/60 backdrop-blur-md border-b border-border/40">
-      <div 
-        ref={progressRef}
-        className="absolute bottom-0 left-0 h-[2px] bg-accent w-full origin-left scale-x-0"
-      />
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <motion.h1 
@@ -38,18 +15,7 @@ export function TopNavbar() {
         </div>
 
         <div className="flex-1 max-w-md mx-8 hidden md:block">
-          <div className="relative group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search surahs, translations..."
-              className="w-full bg-secondary/50 border border-transparent focus:border-accent/30 focus:bg-card px-10 py-2 rounded-full text-sm outline-none transition-all"
-            />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-              <kbd className="px-1.5 py-0.5 bg-muted text-[10px] rounded border border-border shadow-sm">⌘</kbd>
-              <kbd className="px-1.5 py-0.5 bg-muted text-[10px] rounded border border-border shadow-sm">K</kbd>
-            </div>
-          </div>
+          <SearchDialog />
         </div>
 
         <div className="flex items-center gap-3">
