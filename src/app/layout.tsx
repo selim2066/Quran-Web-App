@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { inter, amiri, scheherazade } from "@/lib/fonts";
 import { Providers } from "@/providers";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <Providers>
           {children}
+          <Toaster position="bottom-right" expand={false} richColors />
         </Providers>
       </body>
     </html>

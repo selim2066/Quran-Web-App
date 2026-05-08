@@ -10,6 +10,8 @@ import { fetchAyahs, fetchSurahs } from "../../surah/services/quranApi";
 import { useQuranStore } from "@/store/useQuranStore";
 import { useEffect, useRef } from "react";
 
+import { toast } from "sonner";
+
 export function AyahReader() {
   const { 
     selectedSurah, 
@@ -31,6 +33,24 @@ export function AyahReader() {
     queryKey: ["ayahs", selectedSurah],
     queryFn: () => fetchAyahs(selectedSurah),
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ayahKey = params.get("ayah");
+    if (ayahKey && !isLoading) {
+      setTimeout(() => {
+        const element = document.getElementById(`ayah-${ayahKey}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+          setCurrentAyah(ayahKey);
+        }
+      }, 500);
+    }
+  }, [isLoading, setCurrentAyah]);
+
+  const handleAction = (label: string) => {
+    toast(`${label} feature is coming soon`);
+  };
 
   if (isLoading) {
     return (
@@ -70,6 +90,7 @@ export function AyahReader() {
         {ayahs?.map((ayah, index) => (
           <motion.article
             key={ayah.id}
+            id={`ayah-${ayah.verse_key}`}
             className={cn(
               "ayah-card group bg-card border border-border p-6 md:p-10 rounded-[2.5rem] space-y-8",
               currentAyah === ayah.verse_key && "ring-2 ring-primary ring-offset-4 ring-offset-background"
@@ -93,11 +114,24 @@ export function AyahReader() {
                   >
                     <Play size={20} fill={currentAyah === ayah.verse_key ? "currentColor" : "none"} />
                   </button>
-                  {[Bookmark, Copy, Share2].map((Icon, i) => (
-                    <button key={i} className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                      <Icon size={20} />
-                    </button>
-                  ))}
+                  <button 
+                    onClick={() => handleAction("Bookmark")}
+                    className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
+                  >
+                    <Bookmark size={20} />
+                  </button>
+                  <button 
+                    onClick={() => handleAction("Copy")}
+                    className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
+                  >
+                    <Copy size={20} />
+                  </button>
+                  <button 
+                    onClick={() => handleAction("Share")}
+                    className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
+                  >
+                    <Share2 size={20} />
+                  </button>
                 </div>
               </div>
             </div>

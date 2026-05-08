@@ -1,96 +1,46 @@
-"use client";
-
-import React, { useState } from "react";
-import { LeftSidebar } from "@/components/shared/LeftSidebar";
+import React from "react";
+import { fetchSurahs } from "@/features/surah/services/quranApi";
 import { TopNavbar } from "@/components/shared/TopNavbar";
-import { SurahSidebar } from "@/features/surah/components/SurahSidebar";
-import { SettingsPanel } from "@/features/settings/components/SettingsPanel";
-import { AyahReader } from "@/features/ayah/components/AyahReader";
-import { AudioPlayer } from "@/features/audio/components/AudioPlayer";
+import { LeftSidebar } from "@/components/shared/LeftSidebar";
 import { MobileNav } from "@/components/shared/MobileNav";
-import { LandingPage } from "@/components/shared/LandingPage";
 import { Footer } from "@/components/shared/Footer";
-import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { HeroSection } from "@/components/shared/HeroSection";
+import { SurahGrid } from "@/components/shared/SurahGrid";
 
-export default function Home() {
-  const [view, setView] = useState<"landing" | "reading">("landing");
-  const [isSurahSidebarOpen, setIsSurahSidebarOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+export const revalidate = 3600; // Revalidate every hour
+
+export default async function HomePage() {
+  const surahs = await fetchSurahs();
 
   return (
-    <main className="flex flex-col h-screen bg-background selection:bg-primary/30">
-      <TopNavbar onOpenSettings={() => setIsSettingsOpen(true)} />
+    <main className="flex flex-col min-h-screen bg-background">
+      <TopNavbar />
       
-      {view === "landing" ? (
-        <div className="flex-1 overflow-y-auto">
-          <LandingPage onStartReading={() => setView("reading")} />
-          <Footer />
-          <button 
-            onClick={() => setView("reading")}
-            className="fixed bottom-24 right-10 z-50 px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold shadow-2xl hover:scale-105 active:scale-95 transition-all"
-          >
-            Start Reading →
-          </button>
-        </div>
-      ) : (
-        <div className="flex flex-1 overflow-hidden">
-          <LeftSidebar />
+      <div className="flex flex-1 relative">
+        <LeftSidebar />
+        
+        <div className="flex-1 flex flex-col min-w-0">
+          <HeroSection />
           
-          <div className={cn(
-            "fixed inset-0 z-50 lg:hidden bg-background/80 backdrop-blur-sm transition-all duration-300",
-            isSurahSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          )}>
-            <div className={cn(
-              "absolute inset-y-0 left-0 w-80 bg-background shadow-2xl transition-transform duration-300 transform",
-              isSurahSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            )}>
-              <div className="p-4 flex justify-end">
-                <button onClick={() => setIsSurahSidebarOpen(false)} className="p-2 text-foreground/40 hover:text-foreground">
-                  <X size={24} />
-                </button>
+          <div className="container mx-auto px-6 py-16">
+            <div className="flex items-center justify-between mb-12">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold text-foreground">Explore Surahs</h2>
+                <p className="text-muted-foreground font-medium">Read and study the 114 chapters of the Holy Quran</p>
               </div>
-              <SurahSidebar isMobile onSelect={() => setIsSurahSidebarOpen(false)} />
-            </div>
-          </div>
-
-          <div className="flex-1 flex flex-col min-w-0 relative h-full min-h-0">
-            <div className="flex-1 flex overflow-hidden h-full min-h-0">
-              <SurahSidebar className="hidden xl:flex" />
-              <div className="flex-1 overflow-y-auto custom-scrollbar pb-32 min-h-0">
-                <AyahReader />
+              <div className="hidden md:flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-primary/60">
+                <span>Total 114 Chapters</span>
               </div>
-              <SettingsPanel className="hidden lg:flex" />
             </div>
+            
+            <SurahGrid surahs={surahs} />
           </div>
-
-          {/* Mobile Settings Drawer */}
-          <div className={cn(
-            "fixed inset-0 z-50 lg:hidden bg-background/80 backdrop-blur-sm transition-all duration-300",
-            isSettingsOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          )}>
-            <div className={cn(
-              "absolute inset-y-0 right-0 w-80 bg-background shadow-2xl transition-transform duration-300 transform",
-              isSettingsOpen ? "translate-x-0" : "translate-x-full"
-            )}>
-              <div className="p-4 flex justify-start">
-                <button onClick={() => setIsSettingsOpen(false)} className="p-2 text-foreground/40 hover:text-foreground">
-                  <X size={24} />
-                </button>
-              </div>
-              <SettingsPanel isMobile />
-            </div>
-          </div>
-
-          <AudioPlayer />
+          
+          <Footer />
         </div>
-      )}
+      </div>
 
-      <MobileNav 
-        onOpenSurahs={() => setIsSurahSidebarOpen(true)} 
-        onOpenSettings={() => setIsSettingsOpen(true)}
-        isReadingView={view === "reading"}
-      />
+      <MobileNav />
     </main>
   );
 }
