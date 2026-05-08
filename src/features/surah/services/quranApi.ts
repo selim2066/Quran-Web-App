@@ -16,10 +16,10 @@ export interface Surah {
 export interface Ayah {
   id: number;
   verse_key: string;
-  text_uthmani: string;
+  text_madani: string;
   translations: {
     text: string;
-    resource_name: string;
+    resource_name?: string;
   }[];
 }
 
@@ -31,7 +31,7 @@ export async function fetchSurahs() {
 
 export async function fetchAyahs(surahId: number) {
   const res = await fetch(
-    `${BASE_URL}/verses/by_chapter/${surahId}?language=en&words=true&translations=131&fields=text_uthmani&per_page=300`
+    `https://api.quran.com/api/v3/chapters/${surahId}/verses?recitation=1&translations=21&language=en&per_page=300`
   );
   const data = await res.json();
   return data.verses as Ayah[];

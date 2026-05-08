@@ -34,7 +34,7 @@ export default function Home() {
           </button>
         </div>
       ) : (
-        <div className="flex flex-1 h-[calc(100vh-4rem)] pb-[88px] md:pb-0">
+        <div className="flex flex-1 overflow-hidden">
           <LeftSidebar />
           
           <div className={cn(
@@ -54,10 +54,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex-1 flex flex-col min-w-0 h-full relative">
-            <div className="flex-1 flex h-full">
+          <div className="flex-1 flex flex-col min-w-0 relative h-full min-h-0">
+            <div className="flex-1 flex overflow-hidden h-full min-h-0">
               <SurahSidebar className="hidden xl:flex" />
-              <div className="flex-1 overflow-y-auto custom-scrollbar h-full bg-background/5">
+              <div className="flex-1 overflow-y-auto custom-scrollbar pb-32 min-h-0">
                 <AyahReader />
               </div>
               <SettingsPanel className="hidden lg:flex" />

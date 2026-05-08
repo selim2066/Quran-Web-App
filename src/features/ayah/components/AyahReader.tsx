@@ -9,7 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchAyahs, fetchSurahs } from "../../surah/services/quranApi";
 import { useQuranStore } from "@/store/useQuranStore";
 import { useEffect, useRef } from "react";
-import { staggerReveal } from "@/animations/gsap-setup";
 
 export function AyahReader() {
   const { 
@@ -32,12 +31,6 @@ export function AyahReader() {
     queryKey: ["ayahs", selectedSurah],
     queryFn: () => fetchAyahs(selectedSurah),
   });
-
-  useEffect(() => {
-    if (!isLoading && ayahs) {
-      staggerReveal(".ayah-card");
-    }
-  }, [isLoading, ayahs, selectedSurah]);
 
   if (isLoading) {
     return (
@@ -78,7 +71,7 @@ export function AyahReader() {
           <motion.article
             key={ayah.id}
             className={cn(
-              "ayah-card group bg-card border border-border p-6 md:p-10 rounded-[2.5rem] space-y-8 transition-all duration-500",
+              "ayah-card group bg-card border border-border p-6 md:p-10 rounded-[2.5rem] space-y-8",
               currentAyah === ayah.verse_key && "ring-2 ring-primary ring-offset-4 ring-offset-background"
             )}
           >
@@ -113,9 +106,9 @@ export function AyahReader() {
             <div className="text-right">
               <p 
                 style={{ fontSize: `${fontSizeArabic}px` }}
-                className="leading-[2.5] font-scheherazade text-foreground transition-colors duration-500"
+                className="leading-[2.5] font-scheherazade text-foreground"
               >
-                {ayah.text_uthmani}
+                {ayah.text_madani}
                 <span className="inline-flex items-center justify-center w-10 h-10 ml-6 rounded-full border border-primary/20 text-xs font-bold text-primary font-sans bg-secondary/50">
                   {index + 1}
                 </span>

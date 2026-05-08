@@ -102,7 +102,8 @@
     @apply font-sans;
   }
 
-  /* Custom Scrollbar */
+  /* Custom Scrollbar disabled for debugging */
+  /*
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -116,4 +117,5 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
   }
+  */
 }
