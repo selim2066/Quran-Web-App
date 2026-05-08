@@ -49,38 +49,25 @@
 }
 
 :root {
-  --background: oklch(0.98 0.01 60); /* Soft Cream/Brown */
-  --foreground: oklch(0.12 0.01 60); /* Warm Deep Black */
-  --card: oklch(0.99 0.005 60);
-  --card-foreground: oklch(0.12 0.01 60);
-  --popover: oklch(0.99 0.005 60);
-  --popover-foreground: oklch(0.12 0.01 60);
-  --primary: oklch(0.25 0.02 60);
-  --primary-foreground: oklch(0.98 0.01 60);
-  --secondary: oklch(0.92 0.02 60); /* Muted Brown/Beige */
-  --secondary-foreground: oklch(0.25 0.02 60);
-  --muted: oklch(0.94 0.01 60);
+  --background: oklch(0.95 0.01 75); /* #F4EFE6 */
+  --foreground: oklch(0.25 0.02 60); /* #3E2F28 */
+  --card: oklch(0.97 0.01 75);
+  --card-foreground: oklch(0.25 0.02 60);
+  --popover: oklch(0.97 0.01 75);
+  --popover-foreground: oklch(0.25 0.02 60);
+  --primary: oklch(0.55 0.05 60); /* #8B6E4E */
+  --primary-foreground: oklch(0.98 0.01 75);
+  --secondary: oklch(0.9 0.02 75); /* #E8E2D6 */
+  --secondary-foreground: oklch(0.55 0.05 60);
+  --muted: oklch(0.92 0.01 75);
   --muted-foreground: oklch(0.45 0.02 60);
-  --accent: oklch(0.75 0.15 75); /* Muted Gold Accent */
-  --accent-foreground: oklch(0.12 0.01 60);
+  --accent: oklch(0.55 0.05 60); /* #8B6E4E */
+  --accent-foreground: oklch(0.98 0.01 75);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.01 60);
-  --input: oklch(0.9 0.01 60);
-  --ring: oklch(0.75 0.15 75);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.75rem;
-  --sidebar: oklch(0.97 0.01 60);
-  --sidebar-foreground: oklch(0.12 0.01 60);
-  --sidebar-primary: oklch(0.25 0.02 60);
-  --sidebar-primary-foreground: oklch(0.98 0.01 60);
-  --sidebar-accent: oklch(0.94 0.01 60);
-  --sidebar-accent-foreground: oklch(0.25 0.02 60);
-  --sidebar-border: oklch(0.9 0.01 60);
-  --sidebar-ring: oklch(0.75 0.15 75);
+  --border: oklch(0.85 0.02 75);
+  --input: oklch(0.85 0.02 75);
+  --ring: oklch(0.55 0.05 60);
+  --radius: 1rem;
 }
 
 .dark {

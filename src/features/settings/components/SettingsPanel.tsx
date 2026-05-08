@@ -1,120 +1,106 @@
 "use client";
 
 import React from "react";
-import { Settings, Type, Layout, Palette, ChevronRight } from "lucide-react";
+import { Settings, Type, Layout, Palette, ChevronRight, ChevronDown, ChevronUp, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 import { useQuranStore } from "@/store/useQuranStore";
 
 export function SettingsPanel() {
-  const { 
-    fontSizeArabic, setFontSizeArabic, 
-    fontSizeTranslation, setFontSizeTranslation 
+  const {
+    fontSizeArabic, setFontSizeArabic,
+    fontSizeTranslation, setFontSizeTranslation
   } = useQuranStore();
 
   return (
-    <div className="w-80 h-[calc(100vh-4rem)] border-l border-border bg-card/30 backdrop-blur-sm flex flex-col hidden lg:flex">
-      <div className="p-6 space-y-8">
-        <div className="flex items-center gap-2">
-          <Settings size={20} className="text-accent" />
-          <h2 className="text-lg font-semibold">Settings</h2>
+    <div className="w-80 h-[calc(100vh-5rem)] border-l border-[#8B6E4E]/10 bg-transparent flex flex-col hidden lg:flex">
+      <div className="p-6 flex-1 overflow-y-auto custom-scrollbar space-y-6">
+        {/* View Mode Tabs */}
+        <div className="flex bg-[#E8E2D6] p-1 rounded-xl">
+          {["Translation", "Reading"].map((tab) => (
+            <button
+              key={tab}
+              className={cn(
+                "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all",
+                tab === "Translation" ? "bg-white text-[#8B6E4E] shadow-sm" : "text-[#3E2F28]/40 hover:text-[#3E2F28]"
+              )}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Reading Settings Accordion */}
+        <div className="space-y-4">
+          <button className="w-full flex items-center justify-between group">
+            <div className="flex items-center gap-3">
+              <BookOpen size={18} className="text-[#8B6E4E]" />
+              <span className="text-sm font-bold text-[#3E2F28]">Reading Settings</span>
+            </div>
+            <ChevronDown size={16} className="text-[#3E2F28]/30 group-hover:text-[#8B6E4E]" />
+          </button>
+          <div className="h-px bg-[#8B6E4E]/10" />
         </div>
 
         {/* Font Settings */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground uppercase tracking-widest">
-            <Type size={14} />
-            <span>Typography</span>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Type size={18} className="text-[#8B6E4E]" />
+              <span className="text-sm font-bold text-[#3E2F28]">Font Settings</span>
+            </div>
+            <ChevronUp size={16} className="text-[#8B6E4E]" />
           </div>
-          
-          <div className="space-y-6">
-            <div className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span>Arabic Font Size</span>
-                <span className="text-accent font-bold">{fontSizeArabic}px</span>
+
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="flex justify-between text-xs font-bold">
+                <span className="text-[#3E2F28]/60">Arabic Font Size</span>
+                <span className="text-[#8B6E4E]">{fontSizeArabic}</span>
               </div>
-              <input 
-                type="range" 
-                min="24" 
-                max="64" 
+              <input
+                type="range"
+                min="24"
+                max="64"
                 value={fontSizeArabic}
                 onChange={(e) => setFontSizeArabic(parseInt(e.target.value))}
-                className="w-full accent-accent cursor-pointer" 
+                className="w-full accent-[#8B6E4E] h-1 bg-[#E8E2D6] rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between text-xs font-bold">
+                <span className="text-[#3E2F28]/60">Translation Font Size</span>
+                <span className="text-[#8B6E4E]">{fontSizeTranslation}</span>
+              </div>
+              <input
+                type="range"
+                min="14"
+                max="32"
+                value={fontSizeTranslation}
+                onChange={(e) => setFontSizeTranslation(parseInt(e.target.value))}
+                className="w-full accent-[#8B6E4E] h-1 bg-[#E8E2D6] rounded-lg appearance-none cursor-pointer"
               />
             </div>
 
             <div className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span>Translation Font Size</span>
-                <span className="text-accent font-bold">{fontSizeTranslation}px</span>
-              </div>
-              <input 
-                type="range" 
-                min="14" 
-                max="32" 
-                value={fontSizeTranslation}
-                onChange={(e) => setFontSizeTranslation(parseInt(e.target.value))}
-                className="w-full accent-accent cursor-pointer" 
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm">Arabic Font Face</label>
-              <button className="w-full flex items-center justify-between p-3 bg-secondary/50 rounded-xl border border-border/50 hover:border-accent/30 transition-all text-sm">
-                <span>Scheherazade New</span>
-                <ChevronRight size={14} />
+              <span className="text-xs font-bold text-[#3E2F28]/60">Arabic Font Face</span>
+              <button className="w-full flex items-center justify-between p-3 bg-white/50 border border-white/60 rounded-xl text-sm font-bold text-[#3E2F28]">
+                <span>KFGQ</span>
+                <ChevronRight size={16} className="text-[#3E2F28]/30" />
               </button>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Appearance Settings */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground uppercase tracking-widest">
-            <Palette size={14} />
-            <span>Appearance</span>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            {["Light", "Dark", "Sepia"].map((mode) => (
-              <button 
-                key={mode}
-                className={cn(
-                  "p-2 rounded-lg border border-border text-xs font-medium transition-all",
-                  mode === "Light" ? "bg-accent text-accent-foreground border-accent" : "hover:border-accent/30"
-                )}
-              >
-                {mode}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Reading Settings */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground uppercase tracking-widest">
-            <Layout size={14} />
-            <span>Layout</span>
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-xl text-sm">
-              <span>Reading Mode</span>
-              <div className="w-10 h-5 bg-accent rounded-full relative p-1 cursor-pointer">
-                <div className="w-3 h-3 bg-white rounded-full absolute right-1" />
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div className="mt-auto p-6">
-        <div className="p-4 bg-accent/5 border border-accent/20 rounded-2xl space-y-3">
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Help spread the knowledge of Islam. Support our mission to make Quran accessible to everyone.
+        {/* Support Card */}
+        <div className="mt-8 p-6 bg-[#E8E2D6]/50 rounded-3xl border border-white/60 space-y-4">
+          <h4 className="font-bold text-[#3E2F28] leading-tight">Help spread the knowledge of Islam</h4>
+          <p className="text-[10px] text-[#3E2F28]/60 leading-relaxed font-medium">
+            Your regular support helps us reach our religious brothers and sisters with the message of Islam. Join our mission and be part of the big change.
           </p>
-          <button className="w-full py-2 bg-accent text-accent-foreground rounded-xl text-xs font-bold hover:opacity-90 transition-all">
+          <button className="w-full py-3 bg-[#8B6E4E] text-white rounded-xl text-xs font-bold shadow-lg hover:shadow-xl transition-all">
             Support Us
           </button>
         </div>

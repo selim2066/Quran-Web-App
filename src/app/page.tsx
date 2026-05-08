@@ -20,7 +20,7 @@ export default function Home() {
       
       {view === "landing" ? (
         <>
-          <LandingPage />
+          <LandingPage onStartReading={() => setView("reading")} />
           <Footer />
           <button 
             onClick={() => setView("reading")}

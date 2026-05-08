@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { MessageCircle, Share2, Globe, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -52,7 +52,7 @@ export function Footer() {
         <div className="space-y-6">
           <h4 className="font-bold text-[#3E2F28]">Follow Us</h4>
           <div className="flex items-center gap-3">
-            {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
+            {[MessageCircle, Share2, Globe, Mail].map((Icon, i) => (
               <button key={i} className="w-10 h-10 rounded-full bg-[#DED7C9] flex items-center justify-center text-[#3E2F28]/60 hover:bg-[#8B6E4E] hover:text-white transition-all">
                 <Icon size={18} />
               </button>

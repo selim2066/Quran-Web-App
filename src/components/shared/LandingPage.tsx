@@ -3,11 +3,21 @@
 import React from "react";
 import { SearchDialog } from "@/features/search/components/SearchDialog";
 import { motion } from "framer-motion";
+import { useQuranStore } from "@/store/useQuranStore";
 
-export function LandingPage() {
+const QUICK_LINKS = [
+  { name: "Al Mulk", id: 67 },
+  { name: "Yasin", id: 36 },
+  { name: "Al Kahf", id: 18 },
+  { name: "Al Ikhlas", id: 112 },
+];
+
+export function LandingPage({ onStartReading }: { onStartReading: () => void }) {
+  const { setSelectedSurah } = useQuranStore();
+
   return (
     <div className="relative min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center bg-[#F4EFE6] overflow-hidden">
-      {/* Decorative Lanterns (SVGs) */}
+      {/* ... decorative ... */}
       <div className="absolute top-0 left-1/4 -translate-x-1/2 opacity-20 hidden md:block">
         <svg width="60" height="200" viewBox="0 0 60 200">
            <line x1="30" y1="0" x2="30" y2="100" stroke="#8B6E4E" strokeWidth="2" />
@@ -47,12 +57,16 @@ export function LandingPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
-          {["Al Mulk", "Yasin", "Al Kahf", "Al Ikhlas"].map((item) => (
+          {QUICK_LINKS.map((item) => (
             <button 
-              key={item}
+              key={item.id}
+              onClick={() => {
+                setSelectedSurah(item.id);
+                onStartReading();
+              }}
               className="px-6 py-2.5 bg-white/50 backdrop-blur-sm border border-white/40 rounded-xl text-sm font-semibold text-[#3E2F28]/70 hover:bg-white hover:text-[#8B6E4E] hover:shadow-lg transition-all"
             >
-              {item}
+              {item.name}
             </button>
           ))}
         </div>
