@@ -1,3 +1,8 @@
+"use client";
+
+import React from "react";
+import { User, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 import { SearchDialog } from "@/features/search/components/SearchDialog";
 
 export function TopNavbar() {

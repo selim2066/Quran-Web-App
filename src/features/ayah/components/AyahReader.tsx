@@ -8,9 +8,12 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAyahs, fetchSurahs } from "../services/quranApi";
 import { useQuranStore } from "@/store/useQuranStore";
+import { useEffect, useRef } from "react";
+import { staggerReveal } from "@/animations/gsap-setup";
 
 export function AyahReader() {
   const { selectedSurah, fontSizeArabic, fontSizeTranslation } = useQuranStore();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const { data: surahs } = useQuery({
     queryKey: ["surahs"],
@@ -23,6 +26,12 @@ export function AyahReader() {
     queryKey: ["ayahs", selectedSurah],
     queryFn: () => fetchAyahs(selectedSurah),
   });
+
+  useEffect(() => {
+    if (!isLoading && ayahs) {
+      staggerReveal(".ayah-card");
+    }
+  }, [isLoading, ayahs, selectedSurah]);
 
   if (isLoading) {
     return (
@@ -61,16 +70,11 @@ export function AyahReader() {
         </p>
       </motion.div>
 
-      {/* Ayahs List */}
-      <div className="space-y-16">
+      <div className="space-y-16" ref={containerRef}>
         {ayahs?.map((ayah, index) => (
           <motion.article
             key={ayah.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: index * 0.05 }}
-            className="group space-y-8 relative"
+            className="ayah-card group space-y-8 relative"
           >
             {/* Ayah Meta & Actions */}
             <div className="flex items-center justify-between pb-4 border-b border-border/30">
