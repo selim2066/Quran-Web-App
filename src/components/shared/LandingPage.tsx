@@ -16,7 +16,7 @@ export function LandingPage({ onStartReading }: { onStartReading: () => void }) 
   const { setSelectedSurah } = useQuranStore();
 
   return (
-    <div className="relative min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center bg-[#F4EFE6] overflow-hidden">
+    <div className="relative min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center bg-[#F4EFE6]">
       {/* ... decorative ... */}
       <div className="absolute top-0 left-1/4 -translate-x-1/2 opacity-20 hidden md:block">
         <svg width="60" height="200" viewBox="0 0 60 200">

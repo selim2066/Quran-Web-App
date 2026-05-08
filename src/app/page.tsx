@@ -19,7 +19,7 @@ export default function Home() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
-    <main className="flex flex-col h-screen bg-background selection:bg-primary/30 overflow-hidden">
+    <main className="flex flex-col h-screen bg-background selection:bg-primary/30">
       <TopNavbar onOpenSettings={() => setIsSettingsOpen(true)} />
       
       {view === "landing" ? (
@@ -34,7 +34,7 @@ export default function Home() {
           </button>
         </div>
       ) : (
-        <div className="flex flex-1 overflow-hidden h-[calc(100vh-4rem)] pb-[88px] md:pb-0">
+        <div className="flex flex-1 h-[calc(100vh-4rem)] pb-[88px] md:pb-0">
           <LeftSidebar />
           
           <div className={cn(
@@ -54,10 +54,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex-1 flex flex-col min-w-0 h-full relative min-h-0">
-            <div className="flex-1 flex overflow-hidden h-full min-h-0">
+          <div className="flex-1 flex flex-col min-w-0 h-full relative">
+            <div className="flex-1 flex h-full">
               <SurahSidebar className="hidden xl:flex" />
-              <div className="flex-1 overflow-y-auto scroll-smooth custom-scrollbar h-full bg-background/5 min-h-0">
+              <div className="flex-1 overflow-y-auto custom-scrollbar h-full bg-background/5">
                 <AyahReader />
               </div>
               <SettingsPanel className="hidden lg:flex" />
