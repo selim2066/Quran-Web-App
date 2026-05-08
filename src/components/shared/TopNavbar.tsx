@@ -1,13 +1,31 @@
-"use client";
-
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Search, Bell, User, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { gsap } from "@/animations/gsap-setup";
 
 export function TopNavbar() {
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.to(progressRef.current, {
+      scaleX: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.3,
+      },
+    });
+  }, []);
+
   return (
     <header className="sticky top-0 z-40 w-full bg-background/60 backdrop-blur-md border-b border-border/40">
+      <div 
+        ref={progressRef}
+        className="absolute bottom-0 left-0 h-[2px] bg-accent w-full origin-left scale-x-0"
+      />
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <motion.h1 

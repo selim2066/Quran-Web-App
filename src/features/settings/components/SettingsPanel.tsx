@@ -5,7 +5,14 @@ import { Settings, Type, Layout, Palette, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+import { useQuranStore } from "@/store/useQuranStore";
+
 export function SettingsPanel() {
+  const { 
+    fontSizeArabic, setFontSizeArabic, 
+    fontSizeTranslation, setFontSizeTranslation 
+  } = useQuranStore();
+
   return (
     <div className="w-80 h-[calc(100vh-4rem)] border-l border-border bg-card/30 backdrop-blur-sm flex flex-col hidden lg:flex">
       <div className="p-6 space-y-8">
@@ -25,17 +32,31 @@ export function SettingsPanel() {
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span>Arabic Font Size</span>
-                <span className="text-accent font-bold">32</span>
+                <span className="text-accent font-bold">{fontSizeArabic}px</span>
               </div>
-              <input type="range" min="20" max="60" className="w-full accent-accent" />
+              <input 
+                type="range" 
+                min="24" 
+                max="64" 
+                value={fontSizeArabic}
+                onChange={(e) => setFontSizeArabic(parseInt(e.target.value))}
+                className="w-full accent-accent cursor-pointer" 
+              />
             </div>
 
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span>Translation Font Size</span>
-                <span className="text-accent font-bold">18</span>
+                <span className="text-accent font-bold">{fontSizeTranslation}px</span>
               </div>
-              <input type="range" min="14" max="30" className="w-full accent-accent" />
+              <input 
+                type="range" 
+                min="14" 
+                max="32" 
+                value={fontSizeTranslation}
+                onChange={(e) => setFontSizeTranslation(parseInt(e.target.value))}
+                className="w-full accent-accent cursor-pointer" 
+              />
             </div>
 
             <div className="space-y-2">
