@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MessageCircle, Share2, Globe, Mail } from "lucide-react";
+import { MessageCircle, Share2, Globe, Mail, BookOpen } from "lucide-react";
 
 export function Footer() {
   return (
@@ -13,15 +13,15 @@ export function Footer() {
          </svg>
       </div>
 
-      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
+      <div className="container max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
         <div className="col-span-1 md:col-span-1 space-y-6">
           <div className="flex items-center gap-3">
-             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
-                <span className="font-bold">Q</span>
+             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600 shadow-lg shadow-green-600/20">
+                <BookOpen className="h-7 w-7 text-white" />
              </div>
              <div>
-               <h3 className="font-bold text-foreground">Quran Mazid</h3>
-               <p className="text-[10px] text-primary">Read, Study, and Learn The Quran</p>
+               <h3 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Quran Mazid</h3>
+               <p className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium">Read, Study, and Learn The Quran</p>
              </div>
           </div>
           <p className="text-sm text-foreground/60 leading-relaxed">
@@ -61,7 +61,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 mt-20 pt-8 border-t border-border/20 text-center">
+      <div className="container max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-border/20 text-center">
          <p className="text-xs text-foreground/40">© 2026 Quran Mazid. All rights reserved.</p>
       </div>
     </footer>

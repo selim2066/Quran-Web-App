@@ -14,7 +14,11 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchSurahs } from "../../surah/services/quranApi";
 import { useQuranStore } from "@/store/useQuranStore";
 
-export function SearchDialog() {
+interface SearchDialogProps {
+  trigger?: React.ReactNode;
+}
+
+export function SearchDialog({ trigger }: SearchDialogProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const { setSelectedSurah, setCurrentAyah } = useQuranStore();
@@ -48,16 +52,22 @@ export function SearchDialog() {
 
   return (
     <>
-      <button 
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground border border-border rounded-full hover:bg-secondary/50 transition-all w-full max-w-[200px]"
-      >
-        <Search size={14} />
-        <span>Search...</span>
-        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-          <span className="text-xs">⌘</span>K
-        </kbd>
-      </button>
+      {trigger ? (
+        <div onClick={() => setOpen(true)} className="cursor-pointer">
+          {trigger}
+        </div>
+      ) : (
+        <button 
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground border border-border rounded-full hover:bg-secondary/50 transition-all w-full max-w-[200px]"
+        >
+          <Search size={14} />
+          <span>Search...</span>
+          <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+            <span className="text-xs">⌘</span>K
+          </kbd>
+        </button>
+      )}
 
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput 

@@ -18,7 +18,7 @@ export default function SurahGrid({ surahs }: SurahGridProps) {
   const visibleSurahs = surahs.slice(0, displayCount);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl mx-auto">
       <div className="flex justify-end mb-6">
         <div className="bg-secondary/50 p-1 rounded-2xl flex items-center gap-1 border border-border/40">
           {["Surah", "Juz", "Page"].map((tab) => (
@@ -30,8 +30,8 @@ export default function SurahGrid({ surahs }: SurahGridProps) {
               }}
               className={cn(
                 "px-6 py-1.5 rounded-xl text-xs font-bold transition-all",
-                activeTab === tab 
-                  ? "bg-card text-primary shadow-sm border border-border/50" 
+                activeTab === tab
+                  ? "bg-card text-primary shadow-sm border border-border/50"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -49,7 +49,7 @@ export default function SurahGrid({ surahs }: SurahGridProps) {
 
       {displayCount < surahs.length && (
         <div className="flex justify-center pt-8">
-          <button 
+          <button
             onClick={() => setDisplayCount(prev => prev + 20)}
             className="flex items-center gap-2 px-8 py-3 bg-secondary hover:bg-secondary/80 text-foreground font-bold rounded-2xl transition-all border border-border/50 group"
           >
@@ -92,7 +92,7 @@ function SurahCard({ surah, index }: { surah: Surah; index: number }) {
                 {surah.translated_name.name}
               </p>
             </div>
-            
+
             <div className="text-right">
               <p className="text-xl font-scheherazade text-foreground leading-none">
                 {surah.name_arabic}

@@ -4,8 +4,16 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAyahs } from "../../features/surah/services/quranApi";
 import { HeroSearch } from "./HeroSearch";
+import Link from "next/link";
 
 const SLIDE_SURAH_IDS = [1, 36, 67, 18, 55, 112];
+const QUICK_LINKS = [
+  { id: 36, name: "Yasin" },
+  { id: 67, name: "Mulk" },
+  { id: 56, name: "Waqiah" },
+  { id: 112, name: "Ikhlas" },
+  { id: 18, name: "Kahf" },
+];
 
 export function HeroSection() {
   const [slides, setSlides] = useState<any[]>([]);
@@ -86,9 +94,22 @@ export function HeroSection() {
           </AnimatePresence>
         </div>
 
-        {/* Hero Search */}
-        <div className="max-w-3xl mx-auto w-full">
+        {/* Hero Search & Quick Links */}
+        <div className="max-w-3xl mx-auto w-full space-y-8">
           <HeroSearch />
+          
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mr-2">Quick Links:</span>
+            {QUICK_LINKS.map((link) => (
+              <Link
+                key={link.id}
+                href={`/surah/${link.id}`}
+                className="px-5 py-2 bg-secondary/50 hover:bg-primary hover:text-white text-foreground/70 text-xs font-bold rounded-full transition-all border border-border/40 hover:border-primary shadow-sm active:scale-95"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 
