@@ -83,7 +83,7 @@ export function AyahReader() {
         </div>
 
         <div className="space-y-2 relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+          <h2 className="text-3xl md:text-4xl font-bold font-serif text-foreground">
             {currentSurah?.name_complex}
           </h2>
           <div className="text-sm text-muted-foreground font-medium">

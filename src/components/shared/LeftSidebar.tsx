@@ -26,32 +26,30 @@ export function LeftSidebar() {
   };
 
   return (
-    <aside className="w-20 h-full bg-card border-r border-border hidden lg:flex flex-col items-center py-8 gap-10">
-      <Link href="/">
-        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg hover:scale-105 transition-all">
-          <span className="text-primary-foreground font-bold text-xl">Q</span>
-        </div>
-      </Link>
-
-      <nav className="flex flex-col gap-6">
+    <aside className="w-16 h-full bg-background border-r border-border/50 hidden lg:flex flex-col items-center py-6 gap-8">
+      <nav className="flex flex-col gap-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Content = (
             <motion.div
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleAction(item)}
               className={cn(
                 "p-3 rounded-xl transition-all relative group cursor-pointer",
                 isActive 
-                  ? "bg-primary text-primary-foreground shadow-lg" 
+                  ? "text-primary bg-primary/5" 
                   : "text-foreground/40 hover:text-primary hover:bg-primary/5"
               )}
             >
-              <item.icon size={24} />
+              <item.icon size={22} strokeWidth={isActive ? 2.5 : 2} />
               
+              {isActive && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
+              )}
+
               {/* Tooltip */}
-              <div className="absolute left-full ml-4 px-2 py-1 bg-foreground text-background text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-[100] uppercase tracking-tighter">
+              <div className="absolute left-full ml-4 px-2 py-1 bg-foreground text-background text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-[100] uppercase tracking-tighter shadow-xl">
                 {item.label}
               </div>
             </motion.div>
@@ -65,24 +63,12 @@ export function LeftSidebar() {
         })}
       </nav>
 
-      <div className="mt-auto space-y-4">
+      <div className="mt-auto flex flex-col gap-4">
         <button 
-          onClick={() => toast("Settings feature coming soon")}
+          onClick={() => toast("Settings coming soon")}
           className="p-3 rounded-xl text-foreground/40 hover:text-primary hover:bg-primary/5 transition-all group relative"
         >
-          <Settings size={24} />
-          <div className="absolute left-full ml-4 px-2 py-1 bg-foreground text-background text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-[100] uppercase tracking-tighter">
-            Settings
-          </div>
-        </button>
-        <button 
-          onClick={() => toast("Information about Quran Mazid")}
-          className="p-3 rounded-xl text-foreground/40 hover:text-primary hover:bg-primary/5 transition-all group relative"
-        >
-          <Info size={24} />
-          <div className="absolute left-full ml-4 px-2 py-1 bg-foreground text-background text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-[100] uppercase tracking-tighter">
-            Info
-          </div>
+          <LayoutGrid size={22} />
         </button>
       </div>
     </aside>

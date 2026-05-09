@@ -1,3 +1,5 @@
+// surah sidebar component
+
 "use client";
 
 import React, { useState } from "react";
@@ -24,8 +26,8 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
     queryFn: fetchSurahs,
   });
 
-  const filteredSurahs = surahs?.filter(s => 
-    s.name_complex.toLowerCase().includes(search.toLowerCase()) || 
+  const filteredSurahs = surahs?.filter(s =>
+    s.name_complex.toLowerCase().includes(search.toLowerCase()) ||
     s.translated_name.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -37,13 +39,15 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
     )}>
       <div className="p-6 space-y-6">
         {/* Tabs */}
-        <div className="flex bg-secondary p-1 rounded-xl">
+        <div className="flex p-1 rounded-xl">
           {["Surah", "Juz", "Page"].map((tab) => (
-            <button 
+            <button
               key={tab}
               className={cn(
                 "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all",
-                tab === "Surah" ? "bg-card text-primary shadow-sm" : "text-foreground/40 hover:text-foreground"
+                tab === "Surah"
+                  ? "bg-white text-black shadow-sm"
+                  : "text-muted-foreground hover:text-foreground bg-secondary/30"
               )}
             >
               {tab}
@@ -52,13 +56,13 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
         </div>
 
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/30 group-focus-within:text-primary transition-colors" size={16} />
-          <input 
-            type="text" 
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={16} />
+          <input
+            type="text"
             placeholder="Search Surah"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-card border border-border px-12 py-3 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-foreground/30"
+            className="w-full bg-card border border-border/60 px-12 py-3 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-muted-foreground"
           />
         </div>
       </div>
@@ -82,22 +86,22 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
                   }}
                   className={cn(
                     "w-full flex items-center justify-between p-4 rounded-2xl transition-all group border",
-                    selectedSurah === surah.id 
-                      ? "bg-primary/[0.03] border-primary/20 shadow-lg shadow-primary/5" 
-                      : "bg-card border-border/50 hover:border-primary/30"
+                    selectedSurah === surah.id
+                      ? "bg-primary/10 border-l-2 border-primary shadow-lg shadow-primary/5"
+                      : "bg-card border border-border/60 hover:border-primary/30"
                   )}
                 >
                   <div className="flex items-center gap-4">
                     <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
                       <div className={cn(
                         "absolute inset-0 rotate-45 border-2 rounded-lg transition-all duration-300",
-                        selectedSurah === surah.id 
-                          ? "bg-primary border-primary" 
-                          : "bg-secondary/50 border-border group-hover:border-primary/30"
+                        selectedSurah === surah.id
+                          ? "bg-primary border-primary shadow-lg shadow-primary/30"
+                          : "bg-card border-2 border-border/60 group-hover:border-primary/30"
                       )} />
                       <span className={cn(
                         "relative text-xs font-bold transition-colors",
-                        selectedSurah === surah.id ? "text-primary-foreground" : "text-foreground/40"
+                        selectedSurah === surah.id ? "text-primary-foreground" : "text-accent-foreground"
                       )}>
                         {surah.id}
                       </span>

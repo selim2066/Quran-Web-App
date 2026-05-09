@@ -8,26 +8,33 @@
   --font-amiri: var(--font-amiri);
   --font-scheherazade: var(--font-scheherazade);
   --font-noto-naskh: var(--font-noto-naskh);
-  
+  --font-serif: var(--font-playfair);
+
   --color-background: #ffffff;
   --color-foreground: #0f172a;
-  
+
   --color-primary: #15803d;
   --color-primary-foreground: #ffffff;
-  
+
   --color-secondary: #f1f5f9;
   --color-secondary-foreground: #0f172a;
-  
+
   --color-muted: #f1f5f9;
   --color-muted-foreground: #64748b;
-  
+
   --color-accent: #f1f5f9;
   --color-accent-foreground: #0f172a;
-  
+
   --color-border: #e2e8f0;
   --color-input: #e2e8f0;
   --color-ring: #15803d;
-  
+
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+
   --radius: 0.5rem;
 }
 
@@ -56,30 +63,45 @@
   }
 
   .dark {
-    --background: #09090b;
+    --background: #0c0d0c;
     --foreground: #f8fafc;
-    --primary: #22c55e;
+    --primary: #2ecc71;
     --primary-foreground: #000000;
-    --secondary: #1e293b;
+    --secondary: #1c2b1c;
     --secondary-foreground: #f8fafc;
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-    --accent: #1e293b;
-    --accent-foreground: #f8fafc;
+    --muted: #1c2b1c;
+    --muted-foreground: #6b7c6b;
+    --accent: #1e2e1e;
+    --accent-foreground: #5a6e5a;
     --destructive: #7f1d1d;
     --destructive-foreground: #f8fafc;
-    --border: #1e293b;
-    --input: #1e293b;
-    --ring: #22c55e;
-    --card: #09090b;
+    --border: #2a3d2a;
+    --input: #1c2b1c;
+    --ring: #2ecc71;
+    --card: #0c0d0c;
     --card-foreground: #f8fafc;
-    --popover: #09090b;
+    --popover: #0c0d0c;
     --popover-foreground: #f8fafc;
 
-    --color-background: #09090b;
+    --color-background: #0c0d0c;
     --color-foreground: #f8fafc;
-    --color-primary: #22c55e;
+    --color-primary: #2ecc71;
     --color-primary-foreground: #000000;
+    --color-secondary: #1c2b1c;
+    --color-secondary-foreground: #f8fafc;
+    --color-muted: #1c2b1c;
+    --color-muted-foreground: #6b7c6b;
+    --color-accent: #1e2e1e;
+    --color-accent-foreground: #5a6e5a;
+    --color-destructive: #7f1d1d;
+    --color-destructive-foreground: #f8fafc;
+    --color-border: #2a3d2a;
+    --color-input: #1c2b1c;
+    --color-ring: #2ecc71;
+    --color-card: #0c0d0c;
+    --color-card-foreground: #f8fafc;
+    --color-popover: #0c0d0c;
+    --color-popover-foreground: #f8fafc;
   }
 
   * {

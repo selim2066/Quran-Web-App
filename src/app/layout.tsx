@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { inter, amiri, scheherazade, notoNaskh } from "@/lib/fonts";
+import { inter, amiri, scheherazade, notoNaskh, playfair } from "@/lib/fonts";
 import { Providers } from "@/providers";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -18,7 +18,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable} ${notoNaskh.variable} h-full antialiased`}
+      className={`${inter.variable} ${amiri.variable} ${scheherazade.variable} ${notoNaskh.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
         <Providers>

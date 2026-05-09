@@ -33,13 +33,15 @@ export function SettingsPanel({ className, isMobile }: SettingsPanelProps) {
     )}>
       <div className="p-6 flex-1 overflow-y-auto custom-scrollbar space-y-8">
         {/* View Mode Tabs */}
-        <div className="flex bg-secondary p-1 rounded-xl">
+        <div className="flex p-1 rounded-xl">
           {["Translation", "Reading"].map((tab) => (
             <button
               key={tab}
               className={cn(
                 "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all",
-                tab === "Translation" ? "bg-card text-primary shadow-sm" : "text-foreground/40 hover:text-foreground"
+                tab === "Translation"
+                  ? "bg-white text-black shadow-sm"
+                  : "text-muted-foreground hover:text-foreground bg-secondary/30"
               )}
             >
               {tab}
@@ -53,12 +55,12 @@ export function SettingsPanel({ className, isMobile }: SettingsPanelProps) {
           <div className="space-y-4">
             <button className="w-full flex items-center justify-between group">
               <div className="flex items-center gap-3">
-                <BookOpen size={18} className="text-primary/60" />
+                <BookOpen size={18} className="text-muted-foreground" />
                 <span className="text-sm font-bold text-foreground">Reading Settings</span>
               </div>
-              <ChevronDown size={16} className="text-foreground/30 group-hover:text-primary" />
+              <ChevronDown size={16} className="text-muted-foreground group-hover:text-primary" />
             </button>
-            <div className="h-px bg-border/50" />
+            <div className="h-px bg-border/30" />
           </div>
 
           {/* Font Settings Accordion */}
@@ -71,56 +73,57 @@ export function SettingsPanel({ className, isMobile }: SettingsPanelProps) {
               <ChevronUp size={16} className="text-primary" />
             </div>
 
-            <div className="space-y-8 animate-in slide-in-from-top-2 duration-300">
-              <div className="space-y-4">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-foreground/60">Arabic Font Size</span>
-                  <span className="text-primary">{fontSizeArabic}</span>
-                </div>
-                <input
-                  type="range"
-                  min="24"
-                  max="64"
-                  value={fontSizeArabic}
-                  onChange={(e) => setFontSizeArabic(parseInt(e.target.value))}
-                  className="w-full accent-primary h-1 bg-secondary rounded-full appearance-none cursor-pointer"
-                />
+            <div className="space-y-6">
+              <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider">
+                <span className="text-muted-foreground">Arabic Font Size</span>
+                <span className="text-primary">{fontSizeArabic}</span>
               </div>
+              <input
+                type="range"
+                min="24"
+                max="64"
+                value={fontSizeArabic}
+                onChange={(e) => setFontSizeArabic(parseInt(e.target.value))}
+                className="w-full h-1 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
+              />
+            </div>
 
-              <div className="space-y-4">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-foreground/60">Translation Font Size</span>
-                  <span className="text-primary">{fontSizeTranslation}</span>
-                </div>
-                <input
-                  type="range"
-                  min="14"
-                  max="32"
-                  value={fontSizeTranslation}
-                  onChange={(e) => setFontSizeTranslation(parseInt(e.target.value))}
-                  className="w-full accent-primary h-1 bg-secondary rounded-full appearance-none cursor-pointer"
-                />
+            <div className="space-y-6">
+              <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider">
+                <span className="text-muted-foreground">Translation Font Size</span>
+                <span className="text-primary">{fontSizeTranslation}</span>
               </div>
+              <input
+                type="range"
+                min="14"
+                max="32"
+                value={fontSizeTranslation}
+                onChange={(e) => setFontSizeTranslation(parseInt(e.target.value))}
+                className="w-full h-1 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
+              />
+            </div>
 
-              <div className="space-y-3">
-                <span className="text-xs font-bold text-foreground/60">Arabic Font Face</span>
-                <div className="grid grid-cols-1 gap-2">
-                  {arabicFonts.map((font) => (
-                    <button
-                      key={font.name}
-                      onClick={() => setArabicFont(font.class)}
-                      className={cn(
-                        "w-full flex items-center justify-between p-3 rounded-xl text-sm font-bold transition-all border",
-                        arabicFont === font.class 
-                          ? "bg-primary/5 border-primary text-primary" 
-                          : "bg-secondary/30 border-border/50 text-foreground hover:border-primary"
-                      )}
-                    >
-                      <span>{font.name}</span>
-                      {arabicFont === font.class && <ChevronRight size={16} />}
-                    </button>
-                  ))}
-                </div>
+            <div className="space-y-4">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Arabic Font Face</span>
+              <div className="grid grid-cols-1 gap-2">
+                {arabicFonts.map((font) => (
+                  <button
+                    key={font.name}
+                    onClick={() => setArabicFont(font.class)}
+                    className={cn(
+                      "w-full flex items-center justify-between p-3.5 rounded-xl text-sm font-bold transition-all border",
+                      arabicFont === font.class
+                        ? "bg-primary/[0.05] border-primary/30 text-primary"
+                        : "bg-card border-border/60 text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                    )}
+                  >
+                    <span className="font-medium">{font.name}</span>
+                    <ChevronRight size={16} className={cn(
+                      "transition-colors",
+                      arabicFont === font.class ? "text-primary" : "text-foreground/20"
+                    )} />
+                  </button>
+                ))}
               </div>
             </div>
           </div>

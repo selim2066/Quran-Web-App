@@ -31,23 +31,22 @@ export function TopNavbar({ onOpenSettings }: TopNavbarProps) {
   return (
     <header className="sticky py-3 top-0 z-40 w-full bg-background border-b border-border/10">
       <div className="container max-w-7xl mx-auto h-16 flex items-center justify-between">
-        {/* Logo */}
-        <div className="">
-          <Link href="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600 shadow-lg shadow-green-600/20 group-hover:scale-105 transition-transform">
-                <BookOpen className="h-7 w-7 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  Quran Mazid
-                </h1>
-                <p className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium">
-                  Read, Study, and Learn The Quran
-                </p>
-              </div>
-            </div>
-          </Link>
+        {/* Logo and Title */}
+        <div className="flex items-center gap-3">
+          {/* The Icon Container */}
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20">
+            <BookOpen className="h-7 w-7 text-white" />
+          </div>
+          
+          {/* The Text Column */}
+          <div>
+            <h1 className="text-xl font-bold font-serif tracking-tight text-foreground">
+              Quran Mazid
+            </h1>
+            <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold">
+              Read, Study, and Learn The Quran
+            </p>
+          </div>
         </div>
 
         {/* Navigation Links */}
@@ -87,7 +86,7 @@ export function TopNavbar({ onOpenSettings }: TopNavbarProps) {
 
             <button
               onClick={() => toast("This feature is coming soon")}
-              className="ml-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-bold shadow-sm hover:opacity-90 transition-all flex items-center gap-2 whitespace-nowrap"
+              className="ml-4 px-5 py-2.5 bg-primary text-primary-foreground rounded-full text-[13px] font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center gap-2"
             >
               <span>Support Us</span>
               <Heart size={16} fill="currentColor" />
