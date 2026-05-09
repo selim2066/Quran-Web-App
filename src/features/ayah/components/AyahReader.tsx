@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Play, Bookmark, Share2, MoreHorizontal, Copy, BookOpen } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchAyahs, fetchSurahs } from "../../surah/services/quranApi";
 import { useQuranStore } from "@/store/useQuranStore";
-import { useEffect, useRef } from "react";
 
 import { toast } from "sonner";
 
@@ -22,6 +21,16 @@ export function AyahReader() {
     setCurrentAyah 
   } = useQuranStore();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [openMenuAyah, setOpenMenuAyah] = useState<string | null>(null);
+
+  const menuItems = [
+    { label: "Play", icon: Play, action: (key: string) => setCurrentAyah(key) },
+    { label: "Tafsir", icon: BookOpen, action: () => handleAction("Tafsir") },
+    { label: "Bookmark", icon: Bookmark, action: () => handleAction("Bookmark") },
+    { label: "Ayah Copy", icon: Copy, action: () => handleAction("Copy") },
+    { label: "Copy Link", icon: Share2, action: () => handleAction("Link") },
+    { label: "Ayah Share", icon: Share2, action: () => handleAction("Share") },
+  ];
 
   const { data: surahs } = useQuery({
     queryKey: ["surahs"],
@@ -98,38 +107,49 @@ export function AyahReader() {
             key={ayah.id}
             id={`ayah-${ayah.verse_key}`}
             className={cn(
-              "group flex gap-8 py-12 px-2 transition-all duration-500",
+              "group flex gap-8 py-12 px-2 transition-all duration-500 relative",
               currentAyah === ayah.verse_key && "bg-primary/[0.03]"
             )}
           >
+            {/* Mobile More Button (Top Right) */}
+            <button 
+              onClick={() => setOpenMenuAyah(ayah.verse_key)}
+              className="absolute top-8 right-4 p-2 text-muted-foreground hover:text-primary transition-all lg:hidden"
+            >
+              <MoreHorizontal size={20} />
+            </button>
+
             {/* Left Vertical Action Bar */}
             <div className="flex flex-col items-center gap-6 pt-1 shrink-0">
               <span className="text-sm font-bold text-primary mb-2">{ayah.verse_key}</span>
               
-              <button 
-                onClick={() => setCurrentAyah(ayah.verse_key)}
-                className="text-muted-foreground hover:text-primary transition-all"
-              >
-                <Play size={20} />
-              </button>
+              <div className="flex flex-col items-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button 
+                  onClick={() => setCurrentAyah(ayah.verse_key)}
+                  className="text-muted-foreground hover:text-primary transition-all"
+                >
+                  <Play size={20} />
+                </button>
 
-              <button 
-                onClick={() => handleAction("Book")}
-                className="text-muted-foreground hover:text-primary transition-all"
-              >
-                <BookOpen size={20} />
-              </button>
+                <button 
+                  onClick={() => handleAction("Book")}
+                  className="text-muted-foreground hover:text-primary transition-all"
+                >
+                  <BookOpen size={20} />
+                </button>
 
-              <button 
-                onClick={() => handleAction("Bookmark")}
-                className="text-muted-foreground hover:text-primary transition-all"
-              >
-                <Bookmark size={20} />
-              </button>
+                <button 
+                  onClick={() => handleAction("Bookmark")}
+                  className="text-muted-foreground hover:text-primary transition-all"
+                >
+                  <Bookmark size={20} />
+                </button>
+              </div>
 
+              {/* Desktop More Button */}
               <button 
-                onClick={() => handleAction("More")}
-                className="text-muted-foreground hover:text-primary transition-all"
+                onClick={() => setOpenMenuAyah(ayah.verse_key)}
+                className="text-muted-foreground hover:text-primary transition-all hidden lg:block"
               >
                 <MoreHorizontal size={20} />
               </button>
@@ -162,6 +182,50 @@ export function AyahReader() {
           </motion.article>
         ))}
       </div>
+
+      {/* Mobile Bottom Sheet Menu */}
+      <AnimatePresence>
+        {openMenuAyah && (
+          <>
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpenMenuAyah(null)}
+              className="fixed inset-0 bg-black/60 z-[60] lg:hidden"
+            />
+            
+            {/* Sheet */}
+            <motion.div 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed bottom-0 left-0 right-0 z-[70] bg-card rounded-t-3xl p-6 pb-12 lg:hidden shadow-[0_-10px_40px_rgba(0,0,0,0.3)] border-t border-border"
+            >
+              {/* Handle */}
+              <div className="w-12 h-1.5 bg-muted rounded-full mx-auto mb-8" />
+              
+              <div className="space-y-1">
+                {menuItems.map((item) => (
+                  <button
+                    key={item.label}
+                    onClick={() => {
+                      item.action(openMenuAyah);
+                      setOpenMenuAyah(null);
+                    }}
+                    className="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-secondary transition-colors text-foreground font-medium"
+                  >
+                    <item.icon size={22} className="text-primary" />
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
