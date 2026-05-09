@@ -29,7 +29,11 @@ export default function SurahPage() {
 
   return (
     <main className="flex flex-col h-screen bg-background selection:bg-primary/30">
-      <TopNavbar onOpenSettings={() => setIsSettingsOpen(true)} />
+      <TopNavbar 
+        onOpenSettings={() => setIsSettingsOpen(true)} 
+        onOpenSurahs={() => setIsSurahSidebarOpen(true)}
+        isReadingView={true}
+      />
       
       <div className="flex-1 flex overflow-hidden">
         <LeftSidebar />
@@ -43,19 +47,18 @@ export default function SurahPage() {
             "absolute inset-y-0 left-0 w-80 bg-background shadow-2xl transition-transform duration-300 transform",
             isSurahSidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}>
-            <div className="p-4 flex justify-end">
-              <button onClick={() => setIsSurahSidebarOpen(false)} className="p-2 text-foreground/40 hover:text-foreground">
-                <X size={24} />
-              </button>
-            </div>
-            <SurahSidebar isMobile onSelect={() => setIsSurahSidebarOpen(false)} />
+            <SurahSidebar 
+              isMobile 
+              onSelect={() => setIsSurahSidebarOpen(false)} 
+              onClose={() => setIsSurahSidebarOpen(false)}
+            />
           </div>
         </div>
 
         <div className="flex-1 flex flex-col min-w-0 relative h-full min-h-0">
           <div className="flex-1 flex overflow-hidden h-full min-h-0">
             <SurahSidebar className="hidden xl:flex" />
-            <div className="flex-1 overflow-y-auto custom-scrollbar pb-32 min-h-0">
+            <div className="flex-1 overflow-y-auto no-scrollbar md:custom-scrollbar pb-32 min-h-0">
               <AyahReader />
             </div>
             <SettingsPanel className="hidden lg:flex" />

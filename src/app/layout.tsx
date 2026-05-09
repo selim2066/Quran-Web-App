@@ -23,8 +23,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <Providers>
           {children}
-          <Toaster position="bottom-right" expand={false} richColors />
         </Providers>
+        <Toaster position="bottom-right" expand={false} richColors />
       </body>
     </html>
   );

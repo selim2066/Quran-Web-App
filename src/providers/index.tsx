@@ -2,11 +2,9 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { type ThemeProviderProps } from "next-themes";
 import { useState } from "react";
-import { SmoothScroll } from "@/components/shared/SmoothScroll";
 
-export function Providers({ children, ...props }: ThemeProviderProps) {
+export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -16,16 +14,17 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
   }));
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <NextThemesProvider
-        attribute="class"
-        defaultTheme="light"
-        enableSystem
-        disableTransitionOnChange
-        {...props}
-      >
-        {children}
-      </NextThemesProvider>
-    </QueryClientProvider>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <QueryClientProvider client={queryClient}>
+        <div suppressHydrationWarning className="h-full">
+          {children}
+        </div>
+      </QueryClientProvider>
+    </NextThemesProvider>
   );
 }

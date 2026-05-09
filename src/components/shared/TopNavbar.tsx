@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { SearchDialog } from "@/features/search/components/SearchDialog";
-import { Settings, Sun, Moon, Heart, ChevronDown, BookOpen, Menu, X } from "lucide-react";
+import { Settings, Sun, Moon, Heart, ChevronDown, BookOpen, Menu, X, Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
@@ -11,9 +11,11 @@ import { cn } from "@/lib/utils";
 
 interface TopNavbarProps {
   onOpenSettings?: () => void;
+  onOpenSurahs?: () => void;
+  isReadingView?: boolean;
 }
 
-export function TopNavbar({ onOpenSettings }: TopNavbarProps) {
+export function TopNavbar({ onOpenSettings, onOpenSurahs, isReadingView }: TopNavbarProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,76 +32,120 @@ export function TopNavbar({ onOpenSettings }: TopNavbarProps) {
 
   return (
     <header className="sticky py-3 top-0 z-40 w-full bg-background border-b border-border/10">
-      <div className="container max-w-7xl mx-auto h-16 flex items-center justify-between">
-        {/* Logo and Title */}
-        <div className="flex items-center gap-3">
-          {/* The Icon Container */}
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20">
-            <BookOpen className="h-7 w-7 text-white" />
-          </div>
-          
-          {/* The Text Column */}
-          <div>
-            <h1 className="text-xl font-bold font-serif tracking-tight text-foreground">
+      <div className="container max-w-7xl mx-auto h-16 flex items-center justify-between px-4">
+        {/* Mobile Reading View: Hamburger left, Title center, Icons right */}
+        {isReadingView && (
+          <div className="flex md:hidden items-center justify-between w-full">
+            <button 
+              onClick={onOpenSurahs}
+              className="p-2 text-foreground/60 hover:text-primary transition-all"
+            >
+              <Menu size={24} />
+            </button>
+            
+            <h1 className="text-lg font-bold font-serif text-foreground">
               Quran Mazid
             </h1>
-            <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold">
-              Read, Study, and Learn The Quran
-            </p>
+
+            <div className="flex items-center gap-1">
+              <SearchDialog trigger={
+                <button className="p-2 text-foreground/60 hover:text-primary transition-all">
+                  <Search size={20} />
+                </button>
+              } />
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 text-foreground/60 hover:text-primary transition-all"
+              >
+                {mounted && theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              <button
+                onClick={onOpenSettings}
+                className="p-2 text-foreground/60 hover:text-primary transition-all"
+              >
+                <Settings size={20} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 ">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={cn(
-                "text-sm font-bold transition-all whitespace-nowrap",
-                pathname === link.href ? "text-primary" : "text-foreground/60 hover:text-primary"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link href="/not-found" className="text-sm font-bold text-foreground/60 hover:text-primary whitespace-nowrap">Recitation</Link>
-          <Link href="/not-found" className="text-sm font-bold text-foreground/60 hover:text-primary whitespace-nowrap">Translation</Link>
-        </nav>
-
-        {/* Actions */}
-        <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-2">
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-full text-foreground/60 hover:text-primary transition-all"
-            >
-              {mounted && theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-
-            <button
-              onClick={onOpenSettings}
-              className="p-2 rounded-full text-foreground/60 hover:text-primary transition-all"
-            >
-              <Settings size={20} />
-            </button>
-
-            <button
-              onClick={() => toast("This feature is coming soon")}
-              className="ml-4 px-5 py-2.5 bg-primary text-primary-foreground rounded-full text-[13px] font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center gap-2"
-            >
-              <span>Support Us</span>
-              <Heart size={16} fill="currentColor" />
-            </button>
+        {/* Desktop and Normal Mobile View */}
+        <div className={cn(
+          "flex items-center justify-between w-full",
+          isReadingView ? "hidden md:flex" : "flex"
+        )}>
+          {/* Logo and Title */}
+          <div className="flex items-center gap-3">
+            {/* The Icon Container */}
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/20">
+              <BookOpen className="h-7 w-7 text-white" />
+            </div>
+            
+            {/* The Text Column */}
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold font-serif tracking-tight text-foreground">
+                Quran Mazid
+              </h1>
+              <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-bold">
+                Read, Study, and Learn The Quran
+              </p>
+            </div>
           </div>
 
-          {/* Mobile Menu Trigger */}
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-foreground/60 hover:text-primary transition-all"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-8 ">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={cn(
+                  "text-sm font-bold transition-all whitespace-nowrap",
+                  pathname === link.href ? "text-primary" : "text-foreground/60 hover:text-primary"
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link href="/not-found" className="text-sm font-bold text-foreground/60 hover:text-primary whitespace-nowrap">Recitation</Link>
+            <Link href="/not-found" className="text-sm font-bold text-foreground/60 hover:text-primary whitespace-nowrap">Translation</Link>
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 rounded-full text-foreground/60 hover:text-primary transition-all"
+              >
+                {mounted && theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+
+              <button
+                onClick={onOpenSettings}
+                className="p-2 rounded-full text-foreground/60 hover:text-primary transition-all"
+              >
+                <Settings size={20} />
+              </button>
+
+              <button
+                onClick={() => toast("This feature is coming soon")}
+                className="ml-4 px-5 py-2.5 bg-primary text-primary-foreground rounded-full text-[13px] font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center gap-2"
+              >
+                <span>Support Us</span>
+                <Heart size={16} fill="currentColor" />
+              </button>
+            </div>
+
+            {/* Mobile Menu Trigger (Non-Reading View) */}
+            {!isReadingView && (
+              <button 
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden p-2 text-foreground/60 hover:text-primary transition-all"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

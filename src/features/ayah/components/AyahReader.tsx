@@ -98,7 +98,7 @@ export function AyahReader() {
             key={ayah.id}
             id={`ayah-${ayah.verse_key}`}
             className={cn(
-              "group flex gap-8 py-10 px-4 transition-all duration-500",
+              "group flex gap-8 py-12 px-2 transition-all duration-500",
               currentAyah === ayah.verse_key && "bg-primary/[0.03]"
             )}
           >
@@ -108,33 +108,28 @@ export function AyahReader() {
               
               <button 
                 onClick={() => setCurrentAyah(ayah.verse_key)}
-                className={cn(
-                  "p-2 rounded-lg transition-all",
-                  currentAyah === ayah.verse_key 
-                    ? "text-primary scale-110" 
-                    : "text-foreground/30 hover:text-primary"
-                )}
+                className="text-muted-foreground hover:text-primary transition-all"
               >
-                <Play size={20} fill={currentAyah === ayah.verse_key ? "currentColor" : "none"} />
+                <Play size={20} />
               </button>
 
               <button 
                 onClick={() => handleAction("Book")}
-                className="text-foreground/30 hover:text-primary transition-all"
+                className="text-muted-foreground hover:text-primary transition-all"
               >
                 <BookOpen size={20} />
               </button>
 
               <button 
                 onClick={() => handleAction("Bookmark")}
-                className="text-foreground/30 hover:text-primary transition-all"
+                className="text-muted-foreground hover:text-primary transition-all"
               >
                 <Bookmark size={20} />
               </button>
 
               <button 
                 onClick={() => handleAction("More")}
-                className="text-foreground/30 hover:text-primary transition-all"
+                className="text-muted-foreground hover:text-primary transition-all"
               >
                 <MoreHorizontal size={20} />
               </button>
@@ -146,17 +141,14 @@ export function AyahReader() {
               <div className="text-right">
                 <p 
                   style={{ fontSize: `${fontSizeArabic}px` }}
-                  className={cn("leading-[2.5] text-foreground font-medium", arabicFont)}
+                  className={cn("leading-[2.8] text-foreground font-medium", arabicFont)}
                 >
                   {ayah.text_madani}
-                  <span className="inline-flex items-center justify-center w-10 h-10 ml-6 rounded-full border border-primary/20 text-xs font-bold text-primary font-sans">
-                    {index + 1}
-                  </span>
                 </p>
               </div>
 
               {/* Translation */}
-              <div className="space-y-4">
+              <div className="space-y-4 max-w-3xl">
                 <p className="text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
                   {ayah.translations?.[0]?.resource_name || "Saheeh International"}
                 </p>

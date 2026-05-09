@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Home, List, Settings, Search, Heart } from "lucide-react";
+import { Home, List, Settings, Search, Heart, LayoutGrid, Send, Bookmark, Type } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -19,10 +19,39 @@ interface MobileNavProps {
 export function MobileNav({ onOpenSurahs, onOpenSettings, isReadingView }: MobileNavProps) {
   const pathname = usePathname();
 
-  const navItems = [
-    { icon: Home, label: "Home", href: "/" },
-    { icon: List, label: "Surahs", href: "/surah/1", onClick: onOpenSurahs },
-  ];
+  if (isReadingView) {
+    return (
+      <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-card/80 backdrop-blur-xl border-t border-border flex items-center justify-around p-3 pb-safe shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)]">
+        <Link href="/" className="flex-1">
+          <div className="flex flex-col items-center gap-1 p-2 rounded-xl text-muted-foreground hover:text-primary transition-all">
+            <LayoutGrid size={22} />
+            <span className="text-[10px] font-bold">Grid</span>
+          </div>
+        </Link>
+
+        <button onClick={() => toast("Share feature coming soon")} className="flex-1">
+          <div className="flex flex-col items-center gap-1 p-2 rounded-xl text-muted-foreground hover:text-primary transition-all">
+            <Send size={22} />
+            <span className="text-[10px] font-bold">Share</span>
+          </div>
+        </button>
+
+        <button onClick={() => toast("Bookmark added")} className="flex-1">
+          <div className="flex flex-col items-center gap-1 p-2 rounded-xl text-muted-foreground hover:text-primary transition-all">
+            <Bookmark size={22} />
+            <span className="text-[10px] font-bold">Bookmark</span>
+          </div>
+        </button>
+
+        <button onClick={() => toast("Layout toggled")} className="flex-1">
+          <div className="flex flex-col items-center gap-1 p-2 rounded-xl text-muted-foreground hover:text-primary transition-all">
+            <Type size={22} />
+            <span className="text-[10px] font-bold">Layout</span>
+          </div>
+        </button>
+      </nav>
+    );
+  }
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-card/80 backdrop-blur-xl border-t border-border flex items-center justify-around p-2 pb-safe shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)]">
@@ -38,8 +67,8 @@ export function MobileNav({ onOpenSurahs, onOpenSettings, isReadingView }: Mobil
 
       <button 
         onClick={() => {
-          if (isReadingView && onOpenSurahs) onOpenSurahs();
-          else if (!isReadingView) window.location.href = "/surah/1";
+          if (onOpenSurahs) onOpenSurahs();
+          else window.location.href = "/surah/1";
         }}
         className="flex-1"
       >

@@ -3,7 +3,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, ListFilter, X } from "lucide-react";
+import { Search, ListFilter, X, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -15,9 +15,10 @@ interface SurahSidebarProps {
   className?: string;
   isMobile?: boolean;
   onSelect?: () => void;
+  onClose?: () => void;
 }
 
-export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProps) {
+export function SurahSidebar({ className, isMobile, onSelect, onClose }: SurahSidebarProps) {
   const [search, setSearch] = useState("");
   const { selectedSurah, setSelectedSurah } = useQuranStore();
 
@@ -37,6 +38,22 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
       !isMobile && "hidden xl:flex",
       className
     )}>
+      {isMobile && (
+        <div className="p-6 flex items-center justify-between border-b border-border/10 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <BookOpen size={18} className="text-primary-foreground" />
+            </div>
+            <span className="font-bold font-serif text-lg text-foreground">Quran Mazid</span>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 text-muted-foreground hover:text-primary transition-all"
+          >
+            <X size={20} />
+          </button>
+        </div>
+      )}
       <div className="p-6 space-y-6">
         {/* Tabs */}
         <div className="flex p-1 rounded-xl">
