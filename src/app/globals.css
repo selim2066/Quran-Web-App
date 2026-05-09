@@ -5,6 +5,9 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-amiri: var(--font-amiri);
+  --font-scheherazade: var(--font-scheherazade);
+  --font-noto-naskh: var(--font-noto-naskh);
   
   --color-background: #ffffff;
   --color-foreground: #0f172a;

@@ -14,6 +14,9 @@ interface QuranState {
   translationLanguage: string;
   setTranslationLanguage: (lang: string) => void;
   
+  arabicFont: string;
+  setArabicFont: (font: string) => void;
+
   currentAyah: string | null;
   setCurrentAyah: (ayahKey: string | null) => void;
 }
@@ -32,6 +35,9 @@ export const useQuranStore = create<QuranState>()(
       
       translationLanguage: "en",
       setTranslationLanguage: (lang) => set({ translationLanguage: lang }),
+
+      arabicFont: "font-scheherazade",
+      setArabicFont: (font) => set({ arabicFont: font }),
 
       currentAyah: null,
       setCurrentAyah: (ayahKey) => set({ currentAyah: ayahKey }),

@@ -15,11 +15,12 @@ interface SettingsPanelProps {
 export function SettingsPanel({ className, isMobile }: SettingsPanelProps) {
   const {
     fontSizeArabic, setFontSizeArabic,
-    fontSizeTranslation, setFontSizeTranslation
+    fontSizeTranslation, setFontSizeTranslation,
+    arabicFont, setArabicFont
   } = useQuranStore();
 
   const arabicFonts = [
-    { name: "KFGQ", class: "font-kfgq" },
+    { name: "KFGQ (Naskh)", class: "font-noto-naskh" },
     { name: "Amiri", class: "font-amiri" },
     { name: "Scheherazade", class: "font-scheherazade" },
   ];
@@ -103,10 +104,23 @@ export function SettingsPanel({ className, isMobile }: SettingsPanelProps) {
 
               <div className="space-y-3">
                 <span className="text-xs font-bold text-foreground/60">Arabic Font Face</span>
-                <button className="w-full flex items-center justify-between p-3 bg-secondary/30 border border-border/50 rounded-xl text-sm font-bold text-foreground hover:border-primary transition-all group">
-                  <span>KFGQ</span>
-                  <ChevronRight size={16} className="text-foreground/30 group-hover:text-primary" />
-                </button>
+                <div className="grid grid-cols-1 gap-2">
+                  {arabicFonts.map((font) => (
+                    <button
+                      key={font.name}
+                      onClick={() => setArabicFont(font.class)}
+                      className={cn(
+                        "w-full flex items-center justify-between p-3 rounded-xl text-sm font-bold transition-all border",
+                        arabicFont === font.class 
+                          ? "bg-primary/5 border-primary text-primary" 
+                          : "bg-secondary/30 border-border/50 text-foreground hover:border-primary"
+                      )}
+                    >
+                      <span>{font.name}</span>
+                      {arabicFont === font.class && <ChevronRight size={16} />}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

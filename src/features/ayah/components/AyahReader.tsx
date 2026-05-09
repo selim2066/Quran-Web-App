@@ -17,6 +17,7 @@ export function AyahReader() {
     selectedSurah, 
     fontSizeArabic, 
     fontSizeTranslation,
+    arabicFont,
     currentAyah,
     setCurrentAyah 
   } = useQuranStore();
@@ -140,7 +141,7 @@ export function AyahReader() {
             <div className="text-right">
               <p 
                 style={{ fontSize: `${fontSizeArabic}px` }}
-                className="leading-[2.5] font-scheherazade text-foreground"
+                className={cn("leading-[2.5] text-foreground", arabicFont)}
               >
                 {ayah.text_madani}
                 <span className="inline-flex items-center justify-center w-10 h-10 ml-6 rounded-full border border-primary/20 text-xs font-bold text-primary font-sans bg-secondary/50">
