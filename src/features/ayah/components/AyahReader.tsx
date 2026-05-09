@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Play, Bookmark, Share2, MoreHorizontal, Copy } from "lucide-react";
+import { Play, Bookmark, Share2, MoreHorizontal, Copy, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -67,99 +67,105 @@ export function AyahReader() {
   }
 
   return (
-    <div className="flex-1 p-6 md:p-8 max-w-5xl mx-auto space-y-10">
+    <div className="flex-1 p-6 md:p-8 max-w-5xl mx-auto space-y-0">
       {/* Surah Header */}
       <motion.div 
         key={selectedSurah}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center space-y-2 py-8 bg-card rounded-3xl border border-border shadow-sm"
+        className="relative mb-12 text-center py-10 overflow-hidden"
       >
-        <h2 className="text-3xl md:text-4xl font-bold font-scheherazade text-foreground">
-          {currentSurah?.name_arabic}
-        </h2>
-        <div className="flex items-center justify-center gap-3 text-sm text-primary font-bold uppercase tracking-widest">
-          <span>{currentSurah?.name_complex}</span>
-          <span className="w-1 h-1 rounded-full bg-primary/30" />
-          <span>{currentSurah?.verses_count} Ayahs</span>
-          <span className="w-1 h-1 rounded-full bg-primary/30" />
-          <span>{currentSurah?.revelation_place}</span>
+        {/* Mosque Silhouette Overlay */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-[0.08] dark:opacity-[0.15]">
+           <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" />
+           </svg>
+        </div>
+
+        <div className="space-y-2 relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            {currentSurah?.name_complex}
+          </h2>
+          <div className="text-sm text-muted-foreground font-medium">
+             {currentSurah?.name_arabic} • {currentSurah?.verses_count} Ayahs, {currentSurah?.revelation_place}
+          </div>
         </div>
       </motion.div>
 
-      <div className="space-y-6" ref={containerRef}>
+      <div className="divide-y divide-border/10" ref={containerRef}>
         {ayahs?.map((ayah, index) => (
           <motion.article
             key={ayah.id}
             id={`ayah-${ayah.verse_key}`}
             className={cn(
-              "ayah-card group bg-card border border-border p-6 md:p-10 rounded-[2.5rem] space-y-8",
-              currentAyah === ayah.verse_key && "ring-2 ring-primary ring-offset-4 ring-offset-background"
+              "group flex gap-8 py-10 px-4 transition-all duration-500",
+              currentAyah === ayah.verse_key && "bg-primary/[0.03]"
             )}
           >
-            {/* Ayah Meta & Actions */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="px-4 py-2 bg-secondary rounded-xl text-xs font-bold text-primary">
-                  {ayah.verse_key}
-                </div>
-                <div className="flex items-center gap-1">
-                  <button 
-                    onClick={() => setCurrentAyah(ayah.verse_key)}
-                    className={cn(
-                      "p-2.5 rounded-xl transition-all",
-                      currentAyah === ayah.verse_key 
-                        ? "bg-primary text-primary-foreground shadow-lg scale-110" 
-                        : "text-foreground/40 hover:text-primary hover:bg-primary/5"
-                    )}
-                  >
-                    <Play size={20} fill={currentAyah === ayah.verse_key ? "currentColor" : "none"} />
-                  </button>
-                  <button 
-                    onClick={() => handleAction("Bookmark")}
-                    className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
-                  >
-                    <Bookmark size={20} />
-                  </button>
-                  <button 
-                    onClick={() => handleAction("Copy")}
-                    className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
-                  >
-                    <Copy size={20} />
-                  </button>
-                  <button 
-                    onClick={() => handleAction("Share")}
-                    className="p-2.5 text-foreground/40 hover:text-primary hover:bg-primary/5 rounded-xl transition-all"
-                  >
-                    <Share2 size={20} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Arabic Text */}
-            <div className="text-right">
-              <p 
-                style={{ fontSize: `${fontSizeArabic}px` }}
-                className={cn("leading-[2.5] text-foreground", arabicFont)}
+            {/* Left Vertical Action Bar */}
+            <div className="flex flex-col items-center gap-6 pt-1 shrink-0">
+              <span className="text-sm font-bold text-primary mb-2">{ayah.verse_key}</span>
+              
+              <button 
+                onClick={() => setCurrentAyah(ayah.verse_key)}
+                className={cn(
+                  "p-2 rounded-lg transition-all",
+                  currentAyah === ayah.verse_key 
+                    ? "text-primary scale-110" 
+                    : "text-foreground/30 hover:text-primary"
+                )}
               >
-                {ayah.text_madani}
-                <span className="inline-flex items-center justify-center w-10 h-10 ml-6 rounded-full border border-primary/20 text-xs font-bold text-primary font-sans bg-secondary/50">
-                  {index + 1}
-                </span>
-              </p>
+                <Play size={20} fill={currentAyah === ayah.verse_key ? "currentColor" : "none"} />
+              </button>
+
+              <button 
+                onClick={() => handleAction("Book")}
+                className="text-foreground/30 hover:text-primary transition-all"
+              >
+                <BookOpen size={20} />
+              </button>
+
+              <button 
+                onClick={() => handleAction("Bookmark")}
+                className="text-foreground/30 hover:text-primary transition-all"
+              >
+                <Bookmark size={20} />
+              </button>
+
+              <button 
+                onClick={() => handleAction("More")}
+                className="text-foreground/30 hover:text-primary transition-all"
+              >
+                <MoreHorizontal size={20} />
+              </button>
             </div>
 
-            {/* Translation */}
-            <div className="space-y-3">
-              <p className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase opacity-60">
-                {ayah.translations?.[0]?.resource_name || "Saheeh International"}
-              </p>
-              <p 
-                style={{ fontSize: `${fontSizeTranslation}px` }}
-                className="text-foreground/80 leading-relaxed font-inter font-medium"
-                dangerouslySetInnerHTML={{ __html: ayah.translations?.[0]?.text || "Translation not available" }}
-              />
+            {/* Ayah Content */}
+            <div className="flex-1 space-y-10">
+              {/* Arabic Text */}
+              <div className="text-right">
+                <p 
+                  style={{ fontSize: `${fontSizeArabic}px` }}
+                  className={cn("leading-[2.5] text-foreground font-medium", arabicFont)}
+                >
+                  {ayah.text_madani}
+                  <span className="inline-flex items-center justify-center w-10 h-10 ml-6 rounded-full border border-primary/20 text-xs font-bold text-primary font-sans">
+                    {index + 1}
+                  </span>
+                </p>
+              </div>
+
+              {/* Translation */}
+              <div className="space-y-4">
+                <p className="text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
+                  {ayah.translations?.[0]?.resource_name || "Saheeh International"}
+                </p>
+                <p 
+                  style={{ fontSize: `${fontSizeTranslation}px` }}
+                  className="text-foreground/90 leading-relaxed font-inter font-medium text-lg"
+                  dangerouslySetInnerHTML={{ __html: ayah.translations?.[0]?.text || "Translation not available" }}
+                />
+              </div>
             </div>
           </motion.article>
         ))}

@@ -72,7 +72,7 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
               ))}
             </div>
           ) : (
-            <div className="space-y-1">
+            <div className="space-y-2 p-2">
               {filteredSurahs?.map((surah) => (
                 <motion.button
                   key={surah.id}
@@ -80,23 +80,24 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
                     setSelectedSurah(surah.id);
                     onSelect?.();
                   }}
-                  whileHover={{ x: 4 }}
                   className={cn(
-                    "w-full flex items-center justify-between p-3 rounded-xl transition-all group",
+                    "w-full flex items-center justify-between p-4 rounded-2xl transition-all group border",
                     selectedSurah === surah.id 
-                      ? "bg-primary/10" 
-                      : "hover:bg-secondary/50"
+                      ? "bg-primary/[0.03] border-primary/20 shadow-lg shadow-primary/5" 
+                      : "bg-card border-border/50 hover:border-primary/30"
                   )}
                 >
                   <div className="flex items-center gap-4">
                     <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
                       <div className={cn(
-                        "absolute inset-0 rotate-45 border-2 rounded-lg transition-colors",
-                        selectedSurah === surah.id ? "bg-primary border-primary" : "border-border group-hover:border-primary/30"
+                        "absolute inset-0 rotate-45 border-2 rounded-lg transition-all duration-300",
+                        selectedSurah === surah.id 
+                          ? "bg-primary border-primary" 
+                          : "bg-secondary/50 border-border group-hover:border-primary/30"
                       )} />
                       <span className={cn(
                         "relative text-xs font-bold transition-colors",
-                        selectedSurah === surah.id ? "text-primary-foreground" : "text-foreground/60"
+                        selectedSurah === surah.id ? "text-primary-foreground" : "text-foreground/40"
                       )}>
                         {surah.id}
                       </span>
@@ -108,20 +109,17 @@ export function SurahSidebar({ className, isMobile, onSelect }: SurahSidebarProp
                       )}>
                         {surah.name_complex}
                       </h4>
-                      <p className="text-[10px] font-medium text-foreground/40 uppercase tracking-widest">
+                      <p className="text-[10px] font-medium text-foreground/40 uppercase tracking-widest mt-0.5">
                         {surah.translated_name.name}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
                     <p className={cn(
-                      "text-lg font-scheherazade transition-colors",
+                      "text-lg font-scheherazade transition-colors leading-none",
                       selectedSurah === surah.id ? "text-primary" : "text-foreground/60"
                     )}>
                       {surah.name_arabic}
-                    </p>
-                    <p className="text-[9px] font-bold text-foreground/30 uppercase tracking-tighter">
-                      {surah.verses_count} Ayahs
                     </p>
                   </div>
                 </motion.button>
