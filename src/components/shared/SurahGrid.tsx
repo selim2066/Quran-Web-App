@@ -12,7 +12,7 @@ interface SurahGridProps {
   surahs: Surah[];
 }
 
-export function SurahGrid({ surahs }: SurahGridProps) {
+export default function SurahGrid({ surahs }: SurahGridProps) {
   const [displayCount, setDisplayCount] = React.useState(20);
   const [activeTab, setActiveTab] = React.useState("Surah");
   const visibleSurahs = surahs.slice(0, displayCount);
@@ -72,8 +72,8 @@ function SurahCard({ surah, index }: { surah: Surah; index: number }) {
       <Link href={`/surah/${surah.id}`}>
         <div className={cn(
           "group flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 border border-border/40",
-          "bg-[#151915]/50 backdrop-blur-sm hover:bg-primary/5 hover:border-primary/40",
-          "dark:bg-[#111] dark:hover:bg-primary/10"
+          "bg-secondary/40 backdrop-blur-sm hover:bg-primary/5 hover:border-primary/40",
+          "dark:bg-card dark:hover:bg-primary/10"
         )}>
           {/* Number Diamond */}
           <div className="relative shrink-0 w-10 h-10 flex items-center justify-center">

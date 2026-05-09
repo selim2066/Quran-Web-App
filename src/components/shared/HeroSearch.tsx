@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSurahs } from "@/features/surah/services/quranApi";
+import { fetchSurahs } from "../../features/surah/services/quranApi";
 
 export function HeroSearch() {
   const [query, setQuery] = useState("");

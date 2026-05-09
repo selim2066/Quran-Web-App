@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchAyahs } from "@/features/surah/services/quranApi";
+import { fetchAyahs } from "../../features/surah/services/quranApi";
 import { HeroSearch } from "./HeroSearch";
 
 const SLIDE_SURAH_IDS = [1, 36, 67, 18, 55, 112];
@@ -48,7 +48,7 @@ export function HeroSection() {
   }, [slides.length]);
 
   return (
-    <section className="relative w-full min-h-[600px] flex flex-col items-center justify-center pt-24 pb-32 overflow-hidden bg-[#F4EFE6] dark:bg-background border-b border-border/10">
+    <section className="relative w-full min-h-[600px] flex flex-col items-center justify-center pt-24 pb-32 overflow-hidden bg-background border-b border-border/10">
       {/* Background Decorative Patterns */}
       <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none select-none overflow-hidden">
         <div className="absolute top-0 left-0 text-[20rem] font-serif -translate-x-1/2 -translate-y-1/2">قرآن</div>
