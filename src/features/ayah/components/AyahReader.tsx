@@ -12,13 +12,13 @@ import { useQuranStore } from "@/store/useQuranStore";
 import { toast } from "sonner";
 
 export function AyahReader() {
-  const { 
-    selectedSurah, 
-    fontSizeArabic, 
+  const {
+    selectedSurah,
+    fontSizeArabic,
     fontSizeTranslation,
     arabicFont,
     currentAyah,
-    setCurrentAyah 
+    setCurrentAyah
   } = useQuranStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const [openMenuAyah, setOpenMenuAyah] = useState<string | null>(null);
@@ -78,7 +78,7 @@ export function AyahReader() {
   return (
     <div className="flex-1 p-6 md:p-8 max-w-5xl mx-auto space-y-0">
       {/* Surah Header */}
-      <motion.div 
+      <motion.div
         key={selectedSurah}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -86,9 +86,9 @@ export function AyahReader() {
       >
         {/* Mosque Silhouette Overlay */}
         <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-[0.08] dark:opacity-[0.15]">
-           <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" />
-           </svg>
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" />
+          </svg>
         </div>
 
         <div className="space-y-2 relative z-10">
@@ -96,7 +96,7 @@ export function AyahReader() {
             {currentSurah?.name_complex}
           </h2>
           <div className="text-sm text-muted-foreground font-medium">
-             {currentSurah?.name_arabic} • {currentSurah?.verses_count} Ayahs, {currentSurah?.revelation_place}
+            {currentSurah?.name_arabic} • {currentSurah?.verses_count} Ayahs, {currentSurah?.revelation_place}
           </div>
         </div>
       </motion.div>
@@ -107,77 +107,61 @@ export function AyahReader() {
             key={ayah.id}
             id={`ayah-${ayah.verse_key}`}
             className={cn(
-              "group flex gap-8 py-12 px-2 transition-all duration-500 relative",
-              currentAyah === ayah.verse_key && "bg-primary/[0.03]"
+              "py-8 px-4 space-y-5 transition-all duration-500 border-b border-border/10",
+              currentAyah === ayah.verse_key && "bg-primary/[0.03] rounded-xl"
             )}
           >
-            {/* Mobile More Button (Top Right) */}
-            <button 
-              onClick={() => setOpenMenuAyah(ayah.verse_key)}
-              className="absolute top-8 right-4 p-2 text-muted-foreground hover:text-primary transition-all lg:hidden"
-            >
-              <MoreHorizontal size={20} />
-            </button>
-
-            {/* Left Vertical Action Bar */}
-            <div className="flex flex-col items-center gap-6 pt-1 shrink-0">
-              <span className="text-sm font-bold text-primary mb-2">{ayah.verse_key}</span>
-              
-              <div className="flex flex-col items-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button 
+            {/* Row 1: Ayah number + actions + three dot */}
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-bold text-primary">{ayah.verse_key}</span>
+              <div className="flex items-center gap-3">
+                <button
                   onClick={() => setCurrentAyah(ayah.verse_key)}
                   className="text-muted-foreground hover:text-primary transition-all"
                 >
-                  <Play size={20} />
+                  <Play size={16} />
                 </button>
-
-                <button 
-                  onClick={() => handleAction("Book")}
+                <button
+                  onClick={() => handleAction("Tafsir")}
                   className="text-muted-foreground hover:text-primary transition-all"
                 >
-                  <BookOpen size={20} />
+                  <BookOpen size={16} />
                 </button>
-
-                <button 
+                <button
                   onClick={() => handleAction("Bookmark")}
                   className="text-muted-foreground hover:text-primary transition-all"
                 >
-                  <Bookmark size={20} />
+                  <Bookmark size={16} />
+                </button>
+                <button
+                  onClick={() => setOpenMenuAyah(ayah.verse_key)}
+                  className="text-muted-foreground hover:text-primary transition-all"
+                >
+                  <MoreHorizontal size={18} />
                 </button>
               </div>
-
-              {/* Desktop More Button */}
-              <button 
-                onClick={() => setOpenMenuAyah(ayah.verse_key)}
-                className="text-muted-foreground hover:text-primary transition-all hidden lg:block"
-              >
-                <MoreHorizontal size={20} />
-              </button>
             </div>
 
-            {/* Ayah Content */}
-            <div className="flex-1 space-y-10">
-              {/* Arabic Text */}
-              <div className="text-right">
-                <p 
-                  style={{ fontSize: `${fontSizeArabic}px` }}
-                  className={cn("leading-[2.8] text-foreground font-medium", arabicFont)}
-                >
-                  {ayah.text_madani}
-                </p>
-              </div>
+            {/* Row 2: Arabic text */}
+            <div className="text-right">
+              <p
+                style={{ fontSize: `${fontSizeArabic}px` }}
+                className={cn("leading-[2.8] text-foreground font-medium", arabicFont)}
+              >
+                {ayah.text_madani}
+              </p>
+            </div>
 
-              {/* Translation */}
-              <div className="space-y-4 max-w-3xl">
-                <p className="text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
-                  {ayah.translations?.[0]?.resource_name || "Saheeh International"}
-                </p>
-                <p 
-                  style={{ fontSize: `${fontSizeTranslation}px` }}
-                  className="text-foreground/90 leading-relaxed font-inter font-medium text-lg"
-                  dangerouslySetInnerHTML={{ __html: ayah.translations?.[0]?.text || "Translation not available" }}
-                />
-              </div>
+            {/* Row 3: Translation */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
+                {ayah.translations?.[0]?.resource_name || "Saheeh International"}
+              </p>
+              <p
+                style={{ fontSize: `${fontSizeTranslation}px` }}
+                className="text-foreground/90 leading-relaxed font-medium"
+                dangerouslySetInnerHTML={{ __html: ayah.translations?.[0]?.text || "Translation not available" }}
+              />
             </div>
           </motion.article>
         ))}
@@ -188,16 +172,16 @@ export function AyahReader() {
         {openMenuAyah && (
           <>
             {/* Backdrop */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpenMenuAyah(null)}
               className="fixed inset-0 bg-black/60 z-[60] lg:hidden"
             />
-            
+
             {/* Sheet */}
-            <motion.div 
+            <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -206,7 +190,7 @@ export function AyahReader() {
             >
               {/* Handle */}
               <div className="w-12 h-1.5 bg-muted rounded-full mx-auto mb-8" />
-              
+
               <div className="space-y-1">
                 {menuItems.map((item) => (
                   <button

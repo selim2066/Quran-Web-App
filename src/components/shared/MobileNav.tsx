@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { SearchDialog } from "@/features/search/components/SearchDialog";
 
 import { toast } from "sonner";
+import { useQuranStore } from "@/store/useQuranStore";
 
 interface MobileNavProps {
   onOpenSurahs?: () => void;
@@ -18,6 +19,9 @@ interface MobileNavProps {
 
 export function MobileNav({ onOpenSurahs, onOpenSettings, isReadingView }: MobileNavProps) {
   const pathname = usePathname();
+  const { isAudioActive } = useQuranStore();
+
+  if (isReadingView && isAudioActive) return null;
 
   if (isReadingView) {
     return (
@@ -65,7 +69,7 @@ export function MobileNav({ onOpenSurahs, onOpenSettings, isReadingView }: Mobil
         </div>
       </Link>
 
-      <button 
+      <button
         onClick={() => {
           if (onOpenSurahs) onOpenSurahs();
           else window.location.href = "/surah/1";
@@ -83,7 +87,7 @@ export function MobileNav({ onOpenSurahs, onOpenSettings, isReadingView }: Mobil
 
       <div className="flex-1 flex justify-center -translate-y-4">
         <SearchDialog trigger={
-          <button 
+          <button
             className="p-4 bg-primary text-primary-foreground rounded-2xl shadow-xl shadow-primary/30 border-4 border-background"
           >
             <Search size={24} />
