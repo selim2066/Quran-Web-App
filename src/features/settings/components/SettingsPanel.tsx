@@ -19,6 +19,9 @@ export function SettingsPanel({ className, isMobile }: SettingsPanelProps) {
     arabicFont, setArabicFont
   } = useQuranStore();
 
+  const [isReadingSettingsOpen, setIsReadingSettingsOpen] = React.useState(true);
+  const [isFontSettingsOpen, setIsFontSettingsOpen] = React.useState(true);
+
   const arabicFonts = [
     { name: "KFGQ (Naskh)", class: "font-noto-naskh" },
     { name: "Amiri", class: "font-amiri" },
@@ -53,79 +56,109 @@ export function SettingsPanel({ className, isMobile }: SettingsPanelProps) {
         <div className="space-y-6">
           {/* Reading Settings */}
           <div className="space-y-4">
-            <button className="w-full flex items-center justify-between group">
+            <button 
+              onClick={() => setIsReadingSettingsOpen(!isReadingSettingsOpen)}
+              className="w-full flex items-center justify-between group"
+            >
               <div className="flex items-center gap-3">
-                <BookOpen size={18} className="text-muted-foreground" />
+                <BookOpen size={18} className={cn("transition-colors", isReadingSettingsOpen ? "text-primary" : "text-muted-foreground")} />
                 <span className="text-sm font-bold text-foreground">Reading Settings</span>
               </div>
-              <ChevronDown size={16} className="text-muted-foreground group-hover:text-primary" />
+              {isReadingSettingsOpen ? (
+                <ChevronUp size={16} className="text-primary" />
+              ) : (
+                <ChevronDown size={16} className="text-muted-foreground group-hover:text-primary" />
+              )}
             </button>
-            <div className="h-px bg-border/30" />
+            <motion.div
+              initial={false}
+              animate={{ height: isReadingSettingsOpen ? "auto" : 0, opacity: isReadingSettingsOpen ? 1 : 0 }}
+              className="overflow-hidden"
+            >
+              <div className="pt-4">
+                <div className="h-px bg-border/30" />
+              </div>
+            </motion.div>
           </div>
 
           {/* Font Settings Accordion */}
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <button 
+              onClick={() => setIsFontSettingsOpen(!isFontSettingsOpen)}
+              className="w-full flex items-center justify-between group"
+            >
               <div className="flex items-center gap-3">
-                <Palette size={18} className="text-primary" />
-                <span className="text-sm font-bold text-primary">Font Settings</span>
+                <Palette size={18} className={cn("transition-colors", isFontSettingsOpen ? "text-primary" : "text-muted-foreground")} />
+                <span className={cn("text-sm font-bold transition-colors", isFontSettingsOpen ? "text-primary" : "text-foreground")}>Font Settings</span>
               </div>
-              <ChevronUp size={16} className="text-primary" />
-            </div>
+              {isFontSettingsOpen ? (
+                <ChevronUp size={16} className="text-primary" />
+              ) : (
+                <ChevronDown size={16} className="text-muted-foreground group-hover:text-primary" />
+              )}
+            </button>
 
-            <div className="space-y-6">
-              <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider">
-                <span className="text-muted-foreground">Arabic Font Size</span>
-                <span className="text-primary">{fontSizeArabic}</span>
-              </div>
-              <input
-                type="range"
-                min="24"
-                max="64"
-                value={fontSizeArabic}
-                onChange={(e) => setFontSizeArabic(parseInt(e.target.value))}
-                className="w-full h-1 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
-              />
-            </div>
+            <motion.div
+              initial={false}
+              animate={{ height: isFontSettingsOpen ? "auto" : 0, opacity: isFontSettingsOpen ? 1 : 0 }}
+              className="overflow-hidden"
+            >
+              <div className="space-y-6 pt-2">
+                <div className="space-y-6">
+                  <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider">
+                    <span className="text-muted-foreground">Arabic Font Size</span>
+                    <span className="text-primary">{fontSizeArabic}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="24"
+                    max="64"
+                    value={fontSizeArabic}
+                    onChange={(e) => setFontSizeArabic(parseInt(e.target.value))}
+                    className="w-full h-1 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
+                  />
+                </div>
 
-            <div className="space-y-6">
-              <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider">
-                <span className="text-muted-foreground">Translation Font Size</span>
-                <span className="text-primary">{fontSizeTranslation}</span>
-              </div>
-              <input
-                type="range"
-                min="14"
-                max="32"
-                value={fontSizeTranslation}
-                onChange={(e) => setFontSizeTranslation(parseInt(e.target.value))}
-                className="w-full h-1 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
-              />
-            </div>
+                <div className="space-y-6">
+                  <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider">
+                    <span className="text-muted-foreground">Translation Font Size</span>
+                    <span className="text-primary">{fontSizeTranslation}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="14"
+                    max="32"
+                    value={fontSizeTranslation}
+                    onChange={(e) => setFontSizeTranslation(parseInt(e.target.value))}
+                    className="w-full h-1 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
+                  />
+                </div>
 
-            <div className="space-y-4">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Arabic Font Face</span>
-              <div className="grid grid-cols-1 gap-2">
-                {arabicFonts.map((font) => (
-                  <button
-                    key={font.name}
-                    onClick={() => setArabicFont(font.class)}
-                    className={cn(
-                      "w-full flex items-center justify-between p-3.5 rounded-xl text-sm font-bold transition-all border",
-                      arabicFont === font.class
-                        ? "bg-primary/[0.05] border-primary/30 text-primary"
-                        : "bg-card border-border/60 text-muted-foreground hover:border-primary/30 hover:text-foreground"
-                    )}
-                  >
-                    <span className="font-medium">{font.name}</span>
-                    <ChevronRight size={16} className={cn(
-                      "transition-colors",
-                      arabicFont === font.class ? "text-primary" : "text-foreground/20"
-                    )} />
-                  </button>
-                ))}
+                <div className="space-y-4">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Arabic Font Face</span>
+                  <div className="grid grid-cols-1 gap-2">
+                    {arabicFonts.map((font) => (
+                      <button
+                        key={font.name}
+                        onClick={() => setArabicFont(font.class)}
+                        className={cn(
+                          "w-full flex items-center justify-between p-3.5 rounded-xl text-sm font-bold transition-all border",
+                          arabicFont === font.class
+                            ? "bg-primary/[0.05] border-primary/30 text-primary"
+                            : "bg-card border-border/60 text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                        )}
+                      >
+                        <span className="font-medium">{font.name}</span>
+                        <ChevronRight size={16} className={cn(
+                          "transition-colors",
+                          arabicFont === font.class ? "text-primary" : "text-foreground/20"
+                        )} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
